@@ -1,22 +1,29 @@
 # Issue tracker: Linear
 
-Issues e specs deste repo vivem no **Linear**, time `LUC` (Lucas-moont-workspace), projeto `P-LUC-3` ("Bat-Computer"). Use as ferramentas MCP do Linear (`mcp__linear__*`) para todas as operações. Não há GitHub remoto e não se usa `.scratch/`.
+Issues e specs deste repo vivem num projeto do **Linear**. Use as ferramentas MCP do Linear (`mcp__linear__*`) para todas as operações. O GitHub guarda só o código: não se usa GitHub Issues nem `.scratch/`.
 
-O design do produto está no documento **"Design — Bat-Computer"** dentro do projeto `P-LUC-3` (cópia de `docs/plans/2026-10-24-bat-computer-design.md`).
+Os identificadores reais ficam em `CLAUDE.local.md` na raiz (arquivo local, fora do git). Neste documento:
+
+- `<TEAM>` = chave do time no Linear
+- `<PROJECT>` = identificador do projeto no Linear
+
+Se `CLAUDE.local.md` não existir, pergunte ao usuário o time e o projeto antes de qualquer escrita.
+
+O design do produto está no documento **"Design — Bat-Computer"** dentro do projeto (cópia de `docs/plans/2026-10-24-bat-computer-design.md`).
 
 ## Convenções
 
-- **Criar uma issue**: `save_issue` com `team: "LUC"`, `project: "P-LUC-3"`, `title` e `description` em Markdown. Bloqueios via `blockedBy` (identificadores como `LUC-122`).
-- **Ler uma issue**: `get_issue` com o identificador (ex.: `LUC-122`), e `list_comments` para os comentários.
-- **Listar issues**: `list_issues` com `project: "P-LUC-3"`, filtrando por `state` e `label` conforme necessário.
+- **Criar uma issue**: `save_issue` com `team: "<TEAM>"`, `project: "<PROJECT>"`, `title` e `description` em Markdown. Bloqueios via `blockedBy` (identificadores como `<TEAM>-123`).
+- **Ler uma issue**: `get_issue` com o identificador (ex.: `<TEAM>-123`), e `list_comments` para os comentários.
+- **Listar issues**: `list_issues` com `project: "<PROJECT>"`, filtrando por `state` e `label` conforme necessário.
 - **Comentar**: `save_comment` na issue.
-- **Aplicar / remover labels**: `save_issue` com `id` e `addLabels` / `removeLabels`. Labels que ainda não existem no time são criadas com `save_issue_label` (`teamId` do time `LUC`).
+- **Aplicar / remover labels**: `save_issue` com `id` e `addLabels` / `removeLabels`. Labels que ainda não existem no time são criadas com `save_issue_label` (`teamId` do time `<TEAM>`).
 - **Mudar status**: `save_issue` com `id` e `state` (`Backlog`, `Todo`, `In Progress`, `Done`, `Canceled`).
 - **Fechar**: comentar o resultado com `save_comment` e depois `save_issue` com `state: "Done"` (ou `"Canceled"` se não for feito).
 
 ## Quando uma skill disser "publish to the issue tracker"
 
-Criar uma issue no Linear, no time `LUC` e no projeto `P-LUC-3`.
+Criar uma issue no Linear, no time `<TEAM>` e no projeto `<PROJECT>`.
 
 ## Quando uma skill disser "fetch the relevant ticket"
 
@@ -31,7 +38,7 @@ Criar uma issue no Linear, no time `LUC` e no projeto `P-LUC-3`.
 
 Usadas por `/wayfinder`. O **mapa** é uma issue-mãe e os **tickets** são sub-issues dela.
 
-- **Mapa**: uma issue com a label `wayfinder:map` no projeto `P-LUC-3`, contendo o corpo Notes / Decisions-so-far / Fog.
+- **Mapa**: uma issue com a label `wayfinder:map` no projeto `<PROJECT>`, contendo o corpo Notes / Decisions-so-far / Fog.
 - **Ticket filho**: issue criada com `parentId` apontando para o mapa. Labels: `wayfinder:<tipo>` (`research`/`prototype`/`grilling`/`task`). Ao ser assumido, recebe `assignee: "me"`.
 - **Bloqueio**: `blockedBy` nativo do Linear.
 - **Consulta de fronteira**: sub-issues abertas do mapa, sem bloqueadora aberta e sem responsável; a primeira na ordem do mapa vence.

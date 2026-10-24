@@ -6,7 +6,7 @@ App desktop (Tauri 2 + React + TypeScript, Windows) que centraliza os projetos p
 
 ### Issue tracker
 
-Issues vivem no Linear (time `LUC`, projeto `P-LUC-3` "Bat-Computer"), via ferramentas MCP do Linear. See `docs/agents/issue-tracker.md`.
+Issues vivem num projeto do Linear, via ferramentas MCP do Linear; os identificadores de time e projeto ficam em `CLAUDE.local.md` (não versionado). See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 

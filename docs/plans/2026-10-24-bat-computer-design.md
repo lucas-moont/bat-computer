@@ -46,7 +46,7 @@ Tauri 2 com React + TypeScript (Vite). A escolha por Tauri em vez de Electron fo
 {
   "id": "uuid",
   "name": "Meu App",
-  "path": "C:\\Users\\thewo\\Documents\\meu-app",
+  "path": "C:\\Projetos\\meu-app",
   "command": "npm run dev",
   "url": "http://localhost:5173"
 }
