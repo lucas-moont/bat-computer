@@ -33,13 +33,13 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 ## Modo compacto (contrato)
 
-THESIS: o quadro deitado. A janela encolhe para uma barra de ~56px de altura que mora na borda da tela; cada projeto é uma faixa curta lado a lado, na ordem das baias (ativos, falha, espera), separadas por um traço. Recusa o widget de ícones soltos e o menu da bandeja.
+THESIS: o quadro deitado. A janela encolhe para uma barra de ~36px de altura que mora na borda da tela; cada projeto é uma faixa curta lado a lado, na ordem das baias (ativos, falha, espera), separadas por um traço. Recusa o widget de ícones soltos e o menu da bandeja.
 
 OWN-WORLD: o mesmo do Quadro de Faixas: suporte colorido com forma, face #111C22, réguas de 1px, régua de tiques na base da barra, Barlow + JetBrains Mono. Sem halo, sem pulso.
 
-STORY: com o editor aberto, o usuário bate o olho na barra, liga ou desliga um projeto com um clique e percebe na hora quando algo cai (contador vermelho ▲ e a faixa sobe 6px fora da linha).
+STORY: com o editor aberto, o usuário bate o olho na barra, liga ou desliga um projeto com um clique e percebe na hora quando algo cai (contador vermelho ▲ e a faixa sobe 4px fora da linha).
 
-FIRST VIEWPORT: alça de arrastar com a marca, alfinete (fixar no topo), contador de falha quando houver; faixas de 40px (suporte 24px, nome + estado em duas linhas, botão 30px); expandir na ponta direita. Clicar no nome expande direto no log daquele projeto.
+FIRST VIEWPORT: alça de arrastar com a marca, alfinete (fixar no topo), contador de falha quando houver; faixas de 26px numa linha só (suporte 22px, nome, botão 26px; o estado fica na forma, na cor e no grupo, com o texto no title); expandir na ponta direita. Clicar no nome expande direto no log daquele projeto.
 
 FORM: Barra de faixas, item 3 da lista de estruturas; seed 019a0d38. Movimento: a mesma FLIP do quadro, agora na horizontal.
 
