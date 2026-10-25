@@ -577,37 +577,41 @@ body{background:#2b2b2f;background-image:radial-gradient(#3a3a40 1px,transparent
 .vD .d-menu .danger{color:var(--red)}
 .vD .toast{background:var(--face2);border:1px solid var(--line);border-radius:3px;padding:8px 14px;font-size:13px;box-shadow:0 10px 28px rgba(0,0,0,.55)}
 .vD.size-c{overflow:visible}
-.vD .m-bar{height:36px;display:flex;align-items:center;gap:3px;padding:0 4px 0 6px;background-color:var(--rack);border:1px solid var(--line);
-  background-image:repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px 12px);background-size:100% 3px;background-position:0 100%;background-repeat:no-repeat}
-.vD .m-grip{display:flex;align-items:center;height:26px;padding:0 4px;color:var(--cyan);cursor:grab}
-.vD .m-ib{width:26px;height:26px;display:grid;place-items:center;background:none;border:1px solid transparent;border-radius:3px;color:var(--mute);flex:none}
+.vD .m-box{width:236px;height:340px;display:grid;grid-template-rows:32px minmax(0,1fr);background:var(--rack);border:1px solid var(--line)}
+.vD .m-head{display:flex;align-items:center;gap:1px;padding:0 3px 0 7px;border-bottom:1px solid var(--rule)}
+.vD .m-grip{flex:1;min-width:0;display:flex;align-items:center;gap:6px;height:24px;color:var(--cyan);cursor:grab}
+.vD .m-grip b{font:600 11px "Barlow Semi Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);white-space:nowrap}
+.vD .m-ib{width:24px;height:24px;display:grid;place-items:center;background:none;border:1px solid transparent;border-radius:3px;color:var(--mute);flex:none}
 .vD .m-ib:hover{background:var(--face2);border-color:var(--line);color:var(--ink)}
 .vD .m-ib.on{color:var(--cyan);border-color:rgba(63,216,255,.45);background:rgba(63,216,255,.08)}
-.vD .m-alert{display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 6px;margin:0 2px;border:0;border-radius:3px;background:var(--red);color:var(--on-red);font:700 11px "JetBrains Mono",monospace;flex:none}
+.vD .m-alert{display:inline-flex;align-items:center;gap:3px;height:18px;padding:0 5px;margin-right:2px;border:0;border-radius:3px;background:var(--red);color:var(--on-red);font:700 10.5px "JetBrains Mono",monospace;flex:none}
 .vD .m-alert .sh{width:9px;height:9px}
-.vD .m-strips{display:flex;align-items:center;gap:4px;overflow-x:auto;max-width:min(1040px,calc(100vw - 200px));padding:6px 4px 2px;scrollbar-width:none}
-.vD .m-strips::-webkit-scrollbar{display:none}
-.vD .m-strips.ovf-r{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 32px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 32px),transparent)}
-.vD .m-strips.ovf-l{-webkit-mask-image:linear-gradient(90deg,transparent,#000 32px);mask-image:linear-gradient(90deg,transparent,#000 32px)}
-.vD .m-strips.ovf-l.ovf-r{-webkit-mask-image:linear-gradient(90deg,transparent,#000 32px,#000 calc(100% - 32px),transparent);mask-image:linear-gradient(90deg,transparent,#000 32px,#000 calc(100% - 32px),transparent)}
-.vD .m-more{flex:none;height:20px;padding:0 6px;display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:3px;background:none;color:var(--mute);font:500 11px "JetBrains Mono",monospace}
-.vD .m-more[hidden]{display:none}
-.vD .m-more:hover{color:var(--ink);background:var(--face2)}
-.vD .m-add{flex:none;margin-right:4px;height:26px}
-.vD .m-gap{width:1px;height:18px;background:var(--line);margin:0 4px;flex:none}
-.vD .m-strip{display:grid;grid-template-columns:22px auto 26px;height:26px;flex:none;position:relative;top:0;background:var(--face);border:1px solid var(--rule);border-radius:3px}
+.vD .m-list{overflow-y:auto;padding:3px 5px 6px;display:flex;flex-direction:column;gap:2px}
+.vD .m-list.ovf-b{-webkit-mask-image:linear-gradient(#000 calc(100% - 28px),transparent);mask-image:linear-gradient(#000 calc(100% - 28px),transparent)}
+.vD .m-list.ovf-t{-webkit-mask-image:linear-gradient(transparent,#000 28px);mask-image:linear-gradient(transparent,#000 28px)}
+.vD .m-list.ovf-t.ovf-b{-webkit-mask-image:linear-gradient(transparent,#000 28px,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(transparent,#000 28px,#000 calc(100% - 28px),transparent)}
+.vD .m-bayh{display:flex;align-items:center;gap:5px;height:18px;margin-top:4px;flex:none}
+.vD .m-bayh:first-child{margin-top:2px}
+.vD .m-bayh h3{margin:0;font:600 10px "Barlow Semi Condensed",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.vD .m-bayh.b-run h3{color:var(--cyan)}
+.vD .m-bayh.b-err h3{color:var(--red)}
+.vD .m-bayh .n{font:500 10.5px "JetBrains Mono",monospace;color:var(--ink)}
+.vD .m-bayh .rule{flex:1;height:5px;background:linear-gradient(var(--line),var(--line)) 0 100%/100% 1px no-repeat,
+  repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px 12px) 0 100%/100% 4px no-repeat}
+.vD .m-strip{display:grid;grid-template-columns:20px minmax(0,1fr) 26px;height:26px;flex:none;background:var(--face);border:1px solid var(--rule);border-radius:3px}
 .vD .m-strip>*+*{border-left:1px solid var(--rule)}
-.vD .m-strip.cocked{top:-4px}
+.vD .m-strip.cocked{margin-left:8px}
+.vD .m-strip .ic{width:14px;height:14px}
 .vD .m-strip .sh{width:9px;height:9px}
-.vD .m-name{display:flex;align-items:center;min-width:0;padding:0 8px;background:none;border:0;text-align:left}
+.vD .m-name{min-width:0;padding:0 7px;background:none;border:0;text-align:left;font:600 12.5px "Barlow",sans-serif;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .vD .m-name:hover{background:var(--face2)}
-.vD .m-name b{max-width:108px;font:600 12.5px/1 "Barlow",sans-serif;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.vD .m-name em{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.vD .m-st{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .vD .m-tog{display:grid;place-items:center;background:none;border:0;border-radius:0 2px 2px 0;color:var(--mute)}
 .vD .m-tog.go{color:var(--cyan)}
 .vD .m-tog:hover:not(:disabled){background:var(--g);color:var(--ink)}
 .vD .m-tog.go:hover:not(:disabled){color:var(--cyan)}
-.vD .m-none{color:var(--dim);font-size:13px;padding:0 10px;white-space:nowrap}
+.vD .m-empty{margin:auto;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;padding:16px}
+.vD .m-empty p{margin:0;color:var(--mute);font-size:12.5px;line-height:1.45}
 .vD.size-p .d-body{grid-template-columns:1fr}
 .vD.size-p .d-tx,.vD.size-p .d-form{border-left:0}
 .vD.size-p .d-sum,.vD.size-p .d-clock{display:none}
@@ -1077,24 +1081,26 @@ function mStrip(p){
   const k = stc(p), on = isOn(p);
   return `<div class="m-strip st-${k}${p.cocked ? ' cocked' : ''}" data-flip="${p.id}">
     <span class="d-hold">${SHAPE[k]}</span>
-    <button class="m-name" data-act="expand" data-id="${p.id}" title="${esc(p.name)} · ${dState(p)}${on ? ' · ' + uptime(p) : ''}"><b>${esc(p.name)}</b><em>${dState(p)}</em></button>
+    <button class="m-name" data-act="expand" data-id="${p.id}" title="${esc(p.name)} · ${dState(p)}">${esc(p.name)}</button>
+    <span class="m-st">${dState(p)}</span>
     <button class="m-tog${on ? '' : ' go'}" data-act="toggle" data-id="${p.id}" title="${dTogLabel(p)}" aria-label="${dTogLabel(p)} ${esc(p.name)}" ${p.pending ? 'disabled' : ''}>${ic(on ? 'stop' : 'play')}</button>
   </div>`;
 }
 function dMini(){
   const ps = projects(), n = counts();
-  let last = null, items = '';
-  DBAYS.forEach(([k, , , f]) => ps.filter(f).forEach(p => {
-    if (last && last !== k) items += '<span class="m-gap" aria-hidden="true"></span>';
-    last = k; items += mStrip(p);
-  }));
-  return `<div class="m-bar" role="toolbar" aria-label="Bat-Computer compacto" data-tauri-drag-region>
-    <span class="m-grip" title="Arraste para mover" data-tauri-drag-region>${MARK.replace('width="18" height="18"', 'width="15" height="15"')}</span>
-    <button class="m-ib${S.pin ? ' on' : ''}" data-act="pin" aria-pressed="${!!S.pin}" title="${S.pin ? 'Soltar do topo' : 'Fixar no topo'}" aria-label="Fixar no topo">${ic('pin')}</button>
-    ${n.err ? `<button class="m-alert" data-act="open-err" title="Ver a falha" aria-label="${n.err} em falha">${SHAPE.err}${n.err}</button>` : ''}
-    <div class="m-strips" data-scroll="mini">${items || '<span class="m-none">Nenhum projeto ainda.</span>'}</div>
-    ${items ? '<button class="m-more" data-act="mini-more" hidden></button>' : `<button class="d-btn pri m-add" data-act="mini-add">${ic('plus')}Cadastrar projeto</button>`}
-    <button class="m-ib" data-act="expand" title="Expandir" aria-label="Expandir">${ic('expand')}</button>
+  const bays = DBAYS.map(([k, label, , f]) => {
+    const xs = ps.filter(f);
+    return xs.length ? `<div class="m-bayh b-${k}"><h3>${label}</h3><span class="n">${xs.length}</span><span class="rule"></span></div>${xs.map(mStrip).join('')}` : '';
+  }).join('');
+  return `<div class="m-box" role="region" aria-label="Bat-Computer compacto">
+    <header class="m-head" data-tauri-drag-region>
+      <span class="m-grip" title="Arraste para mover" data-tauri-drag-region>${MARK.replace('width="18" height="18"', 'width="15" height="15"')}<b>Bat-Computer</b></span>
+      ${n.err ? `<button class="m-alert" data-act="open-err" title="Ver a falha" aria-label="${n.err} em falha">${SHAPE.err}${n.err}</button>` : ''}
+      <button class="m-ib" data-act="mini-add" title="Novo projeto" aria-label="Novo projeto">${ic('plus')}</button>
+      <button class="m-ib${S.pin ? ' on' : ''}" data-act="pin" aria-pressed="${!!S.pin}" title="${S.pin ? 'Soltar do topo' : 'Fixar no topo'}" aria-label="Fixar no topo">${ic('pin')}</button>
+      <button class="m-ib" data-act="expand" title="Expandir" aria-label="Expandir">${ic('expand')}</button>
+    </header>
+    <div class="m-list" data-scroll="mini">${bays || `<div class="m-empty"><p>Nenhum projeto ainda.</p><button class="d-btn pri" data-act="mini-add">${ic('plus')}Cadastrar projeto</button></div>`}</div>
   </div>`;
 }
 function dRender(){
@@ -1146,8 +1152,8 @@ function render(){
   win.classList.toggle('p', S.size === 'p');
   win.classList.toggle('c', S.size === 'c');
   if (S.size === 'c') {
-    const st = app.querySelector('.m-strips'), ck = app.querySelector('.m-strip.cocked');
-    if (st && ck) { const x = ck.offsetLeft - st.offsetLeft, fade = 36; if (x < st.scrollLeft + fade || x + ck.offsetWidth > st.scrollLeft + st.clientWidth - fade) st.scrollLeft = x + ck.offsetWidth - st.clientWidth + fade + 8; }
+    const st = app.querySelector('.m-list'), ck = app.querySelector('.m-strip.cocked');
+    if (st && ck) { const y = ck.offsetTop - st.offsetTop, fade = 32; if (y < st.scrollTop + fade || y + ck.offsetHeight > st.scrollTop + st.clientHeight - fade) st.scrollTop = y - st.clientHeight / 2; }
     miniOverflow();
   }
   tick(true);
@@ -1157,24 +1163,12 @@ function render(){
   history.replaceState(null, '', '?' + q);
 }
 function miniOverflow(){
-  const st = app.querySelector('.m-strips'), more = app.querySelector('.m-more');
+  const st = app.querySelector('.m-list');
   if (!st) return;
-  const l = st.scrollLeft > 2, r = st.scrollLeft + st.clientWidth < st.scrollWidth - 2;
-  st.classList.toggle('ovf-l', l); st.classList.toggle('ovf-r', r);
-  if (more) {
-    const hidden = [...st.querySelectorAll('.m-strip')].filter(x => {
-      const a = x.offsetLeft - st.offsetLeft - st.scrollLeft;
-      return a + x.offsetWidth > st.clientWidth + 2;
-    }).length;
-    more.hidden = !hidden; more.textContent = `+${hidden}`;
-    more.title = `${hidden} projeto(s) à direita, fora de vista`; more.setAttribute('aria-label', more.title);
-  }
+  st.classList.toggle('ovf-t', st.scrollTop > 2);
+  st.classList.toggle('ovf-b', st.scrollTop + st.clientHeight < st.scrollHeight - 2);
 }
-app.addEventListener('wheel', e => {
-  const st = e.target.closest('.m-strips');
-  if (st && Math.abs(e.deltaY) > Math.abs(e.deltaX)) { st.scrollLeft += e.deltaY; e.preventDefault(); }
-}, { passive:false });
-app.addEventListener('scroll', e => { if (e.target.classList?.contains('m-strips')) miniOverflow(); }, true);
+app.addEventListener('scroll', e => { if (e.target.classList?.contains('m-list')) miniOverflow(); }, true);
 function renderBar(){
   const v = V[S.variant];
   const scr = [['list','Lista'],['detail','Detalhes'],['form','Formulário']];
@@ -1271,7 +1265,6 @@ app.addEventListener('click', e => {
     case 'open-err': { const q = PROJ.find(x => x.status === 'ERRO'); if (q) { S.size = S.prevSize || 'm'; S.sel = q.id; q.cocked = false; go('detail'); } break; }
     case 'expand': S.size = S.prevSize || 'm'; if (p) { S.sel = id; p.cocked = false; go('detail'); } else go('list'); break;
     case 'mini-add': S.size = S.prevSize || 'm'; S.form = newForm('add'); S.screen = 'form'; render(); break;
-    case 'mini-more': { const st = app.querySelector('.m-strips'); st?.scrollBy({ left: st.clientWidth * .8, behavior: 'smooth' }); break; }
   }
 });
 app.addEventListener('input', e => {
