@@ -25,6 +25,8 @@ body{background:#2b2b2f;background-image:radial-gradient(#3a3a40 1px,transparent
 .win{width:880px;height:580px;max-width:calc(100vw - 32px);max-height:calc(100vh - 140px);display:flex;flex-direction:column;
   border:1px solid #000;box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.06);transition:width .25s,height .25s}
 .win.p{width:480px;height:640px}
+.win.c{width:auto;height:auto}
+.win.c .titlebar{display:none}
 .titlebar{height:30px;flex:none;background:#1f1f1f;color:#ddd;font:12px "Segoe UI",system-ui,sans-serif;
   display:flex;align-items:center;padding-left:12px;user-select:none}
 .titlebar .t{flex:1;opacity:.85}
@@ -436,7 +438,7 @@ body{background:#2b2b2f;background-image:radial-gradient(#3a3a40 1px,transparent
    D · QUADRO DE FAIXAS (escolhida: faixas de controle de voo, ciano tático)
    ====================================================================== */
 .vD{--g:#070B0E;--rack:#0A1216;--face:#111C22;--face2:#16252E;--rule:#1C2B33;--line:#263943;--ink:#DCEBF2;--mute:#8CA3B0;--dim:#7A93A3;
-  --cyan:#3FD8FF;--red:#FF5C4D;--amber:#F2B33D;--slate:#2A3A43;--slatei:#A9BCC7;
+  --cyan:#3FD8FF;--red:#FF5C4D;--amber:#F2B33D;--slate:#2A3A43;--slatei:#A9BCC7;--on-red:#1A0402;
   background:var(--g);color:var(--ink);font:14px/1.4 "Barlow",sans-serif;font-variant-numeric:tabular-nums}
 .vD code,.vD .mono,.vD .log{font-family:"JetBrains Mono",monospace}
 .vD code{font-size:11.5px}
@@ -574,6 +576,41 @@ body{background:#2b2b2f;background-image:radial-gradient(#3a3a40 1px,transparent
 .vD .d-menu button:hover{background:#1F3340}
 .vD .d-menu .danger{color:var(--red)}
 .vD .toast{background:var(--face2);border:1px solid var(--line);border-radius:3px;padding:8px 14px;font-size:13px;box-shadow:0 10px 28px rgba(0,0,0,.55)}
+.vD.size-c{overflow:visible}
+.vD .m-bar{height:56px;display:flex;align-items:center;gap:4px;padding:0 6px 0 8px;background-color:var(--rack);border:1px solid var(--line);
+  background-image:repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px 12px);background-size:100% 4px;background-position:0 100%;background-repeat:no-repeat}
+.vD .m-grip{display:flex;align-items:center;height:36px;padding:0 6px;color:var(--cyan);cursor:grab}
+.vD .m-ib{width:30px;height:30px;display:grid;place-items:center;background:none;border:1px solid transparent;border-radius:3px;color:var(--mute);flex:none}
+.vD .m-ib:hover{background:var(--face2);border-color:var(--line);color:var(--ink)}
+.vD .m-ib.on{color:var(--cyan);border-color:rgba(63,216,255,.45);background:rgba(63,216,255,.08)}
+.vD .m-alert{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 8px;margin:0 2px;border:0;border-radius:3px;background:var(--red);color:var(--on-red);font:700 12px "JetBrains Mono",monospace;flex:none}
+.vD .m-alert .sh{width:10px;height:10px}
+.vD .m-strips{display:flex;align-items:center;gap:4px;overflow-x:auto;max-width:min(1040px,calc(100vw - 200px));padding:10px 4px 6px;scrollbar-width:none}
+.vD .m-strips::-webkit-scrollbar{display:none}
+.vD .m-strips.ovf-r{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 32px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 32px),transparent)}
+.vD .m-strips.ovf-l{-webkit-mask-image:linear-gradient(90deg,transparent,#000 32px);mask-image:linear-gradient(90deg,transparent,#000 32px)}
+.vD .m-strips.ovf-l.ovf-r{-webkit-mask-image:linear-gradient(90deg,transparent,#000 32px,#000 calc(100% - 32px),transparent);mask-image:linear-gradient(90deg,transparent,#000 32px,#000 calc(100% - 32px),transparent)}
+.vD .m-more{flex:none;height:24px;padding:0 7px;display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:3px;background:none;color:var(--mute);font:500 12px "JetBrains Mono",monospace}
+.vD .m-more[hidden]{display:none}
+.vD .m-more:hover{color:var(--ink);background:var(--face2)}
+.vD .m-add{flex:none;margin-right:6px}
+.vD .m-gap{width:1px;height:28px;background:var(--line);margin:0 4px;flex:none}
+.vD .m-strip{display:grid;grid-template-columns:24px auto 30px;height:40px;flex:none;position:relative;top:0;background:var(--face);border:1px solid var(--rule);border-radius:3px}
+.vD .m-strip>*+*{border-left:1px solid var(--rule)}
+.vD .m-strip.cocked{top:-6px}
+.vD .m-strip .sh{width:10px;height:10px}
+.vD .m-name{display:flex;flex-direction:column;justify-content:center;gap:1px;min-width:0;padding:0 8px;background:none;border:0;text-align:left}
+.vD .m-name:hover{background:var(--face2)}
+.vD .m-name b{max-width:108px;font:600 13px/1.15 "Barlow",sans-serif;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vD .m-name em{font:600 10.5px/1.1 "Barlow Semi Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;font-style:normal;color:var(--slatei)}
+.vD .m-strip.st-run .m-name em{color:var(--cyan)}
+.vD .m-strip.st-err .m-name em{color:var(--red)}
+.vD .m-strip.st-busy .m-name em{color:var(--amber)}
+.vD .m-tog{display:grid;place-items:center;background:none;border:0;border-radius:0 2px 2px 0;color:var(--mute)}
+.vD .m-tog.go{color:var(--cyan)}
+.vD .m-tog:hover:not(:disabled){background:var(--g);color:var(--ink)}
+.vD .m-tog.go:hover:not(:disabled){color:var(--cyan)}
+.vD .m-none{color:var(--dim);font-size:13px;padding:0 10px;white-space:nowrap}
 .vD.size-p .d-body{grid-template-columns:1fr}
 .vD.size-p .d-tx,.vD.size-p .d-form{border-left:0}
 .vD.size-p .d-sum,.vD.size-p .d-clock{display:none}
@@ -596,6 +633,8 @@ body{background:#2b2b2f;background-image:radial-gradient(#3a3a40 1px,transparent
   <symbol id="i-folder" viewBox="0 0 16 16"><path d="M2 3.5h4.5L8 5h6v7.5H2z"/></symbol>
   <symbol id="i-check" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5"/></symbol>
   <symbol id="i-lock" viewBox="0 0 16 16"><rect x="3.5" y="7" width="9" height="6.5" rx="1"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 16 16"><path d="M9.5 2 14 6.5M10.8 3.3 7.6 6.5 4.5 6l5.5 5.5-.5-3.1 3.2-3.2M7.2 8.8 2.5 13.5"/></symbol>
+  <symbol id="i-expand" viewBox="0 0 16 16"><path d="M9.5 2.5h4v4M13.5 2.5 9 7M6.5 13.5h-4v-4M2.5 13.5 7 9"/></symbol>
   <symbol id="i-log" viewBox="0 0 16 16"><path d="M3 4h10M3 8h10M3 12h6"/></symbol>
 </svg>
 
@@ -660,7 +699,7 @@ const Q = new URLSearchParams(location.search);
 const S = {
   variant: ['A','B','C','D'].includes((Q.get('variant')||'').toUpperCase()) ? Q.get('variant').toUpperCase() : 'D',
   screen: ['list','detail','form'].includes(Q.get('screen')) ? Q.get('screen') : 'list',
-  fx: Q.get('fx') !== '0', size: Q.get('size') === 'p' ? 'p' : 'm', empty: Q.get('empty') === '1',
+  fx: Q.get('fx') !== '0', size: ['p','c'].includes(Q.get('size')) ? Q.get('size') : 'm', empty: Q.get('empty') === '1',
   sel:'p1', menu:null, confirm:null, form:null, toast:null, boot:false,
 };
 
@@ -1037,7 +1076,32 @@ function dMenu(){
     <button data-act="edit" data-id="${p.id}">${ic('edit')}Editar</button>
     <button class="danger" data-act="del" data-id="${p.id}">${ic('trash')}Apagar</button></div>`;
 }
+function mStrip(p){
+  const k = stc(p), on = isOn(p);
+  return `<div class="m-strip st-${k}${p.cocked ? ' cocked' : ''}" data-flip="${p.id}">
+    <span class="d-hold">${SHAPE[k]}</span>
+    <button class="m-name" data-act="expand" data-id="${p.id}" title="${esc(p.name)} · ${dState(p)}${on ? ' · ' + uptime(p) : ''}"><b>${esc(p.name)}</b><em>${dState(p)}</em></button>
+    <button class="m-tog${on ? '' : ' go'}" data-act="toggle" data-id="${p.id}" title="${dTogLabel(p)}" aria-label="${dTogLabel(p)} ${esc(p.name)}" ${p.pending ? 'disabled' : ''}>${ic(on ? 'stop' : 'play')}</button>
+  </div>`;
+}
+function dMini(){
+  const ps = projects(), n = counts();
+  let last = null, items = '';
+  DBAYS.forEach(([k, , , f]) => ps.filter(f).forEach(p => {
+    if (last && last !== k) items += '<span class="m-gap" aria-hidden="true"></span>';
+    last = k; items += mStrip(p);
+  }));
+  return `<div class="m-bar" role="toolbar" aria-label="Bat-Computer compacto" data-tauri-drag-region>
+    <span class="m-grip" title="Arraste para mover" data-tauri-drag-region>${MARK}</span>
+    <button class="m-ib${S.pin ? ' on' : ''}" data-act="pin" aria-pressed="${!!S.pin}" title="${S.pin ? 'Soltar do topo' : 'Fixar no topo'}" aria-label="Fixar no topo">${ic('pin')}</button>
+    ${n.err ? `<button class="m-alert" data-act="open-err" title="Ver a falha" aria-label="${n.err} em falha">${SHAPE.err}${n.err}</button>` : ''}
+    <div class="m-strips" data-scroll="mini">${items || '<span class="m-none">Nenhum projeto ainda.</span>'}</div>
+    ${items ? '<button class="m-more" data-act="mini-more" hidden></button>' : `<button class="d-btn pri m-add" data-act="mini-add">${ic('plus')}Cadastrar projeto</button>`}
+    <button class="m-ib" data-act="expand" title="Expandir" aria-label="Expandir">${ic('expand')}</button>
+  </div>`;
+}
 function dRender(){
+  if (S.size === 'c') return dMini();
   const s = screenNow(), ps = projects(), small = S.size === 'p';
   if (ps.length && !sel()) S.sel = ps[0].id;
   const p = sel();
@@ -1072,7 +1136,8 @@ function render(){
     else if (sv) el.scrollTop = sv.top;
   });
   // D: a faixa desliza da baia antiga para a nova (FLIP)
-  if (S.variant === 'D' && S.fx && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const sameSize = render.lastSize === S.size; render.lastSize = S.size;
+  if (S.variant === 'D' && S.fx && sameSize && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
     app.querySelectorAll('[data-flip]').forEach(el => {
       const b = before[el.dataset.flip]; if (!b) return;
       const a = el.getBoundingClientRect(), dx = b.left - a.left, dy = b.top - a.top;
@@ -1082,12 +1147,37 @@ function render(){
     });
   }
   win.classList.toggle('p', S.size === 'p');
+  win.classList.toggle('c', S.size === 'c');
+  if (S.size === 'c') {
+    const st = app.querySelector('.m-strips'), ck = app.querySelector('.m-strip.cocked');
+    if (st && ck) { const x = ck.offsetLeft - st.offsetLeft, fade = 36; if (x < st.scrollLeft + fade || x + ck.offsetWidth > st.scrollLeft + st.clientWidth - fade) st.scrollLeft = x + ck.offsetWidth - st.clientWidth + fade + 8; }
+    miniOverflow();
+  }
   tick(true);
   renderBar();
   const q = new URLSearchParams({ variant:S.variant, screen:S.screen, fx:S.fx ? '1' : '0', size:S.size });
   if (S.empty) q.set('empty', '1');
   history.replaceState(null, '', '?' + q);
 }
+function miniOverflow(){
+  const st = app.querySelector('.m-strips'), more = app.querySelector('.m-more');
+  if (!st) return;
+  const l = st.scrollLeft > 2, r = st.scrollLeft + st.clientWidth < st.scrollWidth - 2;
+  st.classList.toggle('ovf-l', l); st.classList.toggle('ovf-r', r);
+  if (more) {
+    const hidden = [...st.querySelectorAll('.m-strip')].filter(x => {
+      const a = x.offsetLeft - st.offsetLeft - st.scrollLeft;
+      return a + x.offsetWidth > st.clientWidth + 2;
+    }).length;
+    more.hidden = !hidden; more.textContent = `+${hidden}`;
+    more.title = `${hidden} projeto(s) à direita, fora de vista`; more.setAttribute('aria-label', more.title);
+  }
+}
+app.addEventListener('wheel', e => {
+  const st = e.target.closest('.m-strips');
+  if (st && Math.abs(e.deltaY) > Math.abs(e.deltaX)) { st.scrollLeft += e.deltaY; e.preventDefault(); }
+}, { passive:false });
+app.addEventListener('scroll', e => { if (e.target.classList?.contains('m-strips')) miniOverflow(); }, true);
 function renderBar(){
   const v = V[S.variant];
   const scr = [['list','Lista'],['detail','Detalhes'],['form','Formulário']];
@@ -1096,12 +1186,13 @@ function renderBar(){
     <button class="arrow" data-b="next" title="→">›</button><span class="sep"></span>
     <div class="seg">${scr.map(([k, l]) => `<button data-b="screen" data-v="${k}" class="${screenNow() === k ? 'on' : ''}">${l}</button>`).join('')}</div><span class="sep"></span>
     <button data-b="fx" class="${S.fx ? 'on' : ''}">${S.fx ? 'Efeitos: imersivo' : 'Efeitos: contido'}</button>
-    <button data-b="size">${S.size === 'p' ? 'Janela: pequena 480×640' : 'Janela: média 880×580'}</button>
+    <button data-b="size">${{ m:'Janela: média 880×580', p:'Janela: pequena 480×640', c:'Janela: compacta' }[S.size]}</button>
     <button data-b="empty" class="${S.empty ? 'on' : ''}">Lista vazia</button>`;
 }
 function go(screen){ S.screen = screen; S.menu = null; if (screen !== 'form') S.form = null; render(); }
 function setVariant(k){
   S.variant = k; S.menu = null; S.confirm = null;
+  if (k !== 'D' && S.size === 'c') S.size = 'p';
   S.boot = k === 'B' && S.fx;
   render();
   if (S.boot) setTimeout(() => { S.boot = false; app.querySelector('.boot')?.remove(); }, 1900);
@@ -1179,6 +1270,11 @@ app.addEventListener('click', e => {
       f.path = 'C:\\Projetos\\novo-projeto'; f.scripts = ['dev','build','preview','lint']; f.cmd = 'npm run dev';
       if (!f.name) f.name = 'novo-projeto'; f.error = null; render(); break;
     case 'save': save(); break;
+    case 'pin': S.pin = !S.pin; render(); break;
+    case 'open-err': { const q = PROJ.find(x => x.status === 'ERRO'); if (q) { S.size = S.prevSize || 'm'; S.sel = q.id; q.cocked = false; go('detail'); } break; }
+    case 'expand': S.size = S.prevSize || 'm'; if (p) { S.sel = id; p.cocked = false; go('detail'); } else go('list'); break;
+    case 'mini-add': S.size = S.prevSize || 'm'; S.form = newForm('add'); S.screen = 'form'; render(); break;
+    case 'mini-more': { const st = app.querySelector('.m-strips'); st?.scrollBy({ left: st.clientWidth * .8, behavior: 'smooth' }); break; }
   }
 });
 app.addEventListener('input', e => {
@@ -1210,7 +1306,7 @@ bar.addEventListener('click', e => {
     case 'next': setVariant(KEYS[(i + 1) % KEYS.length]); break;
     case 'screen': if (b.dataset.v === 'form') { S.form = S.form || newForm('add'); S.screen = 'form'; S.menu = null; render(); } else go(b.dataset.v); break;
     case 'fx': S.fx = !S.fx; render(); break;
-    case 'size': S.size = S.size === 'p' ? 'm' : 'p'; render(); break;
+    case 'size': { const nx = S.size === 'm' ? 'p' : S.size === 'p' && S.variant === 'D' ? 'c' : 'm'; if (nx === 'c') S.prevSize = S.size; S.size = nx; render(); break; }
     case 'empty': S.empty = !S.empty; S.menu = null; render(); break;
   }
 });
