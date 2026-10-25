@@ -14,6 +14,7 @@ Para rodar cada projeto pessoal, hoje é preciso abrir o cmd, entrar na pasta e 
 - Logs visíveis só na tela de detalhes do projeto.
 - Botão "Abrir no navegador" quando o projeto tem `url` e está rodando.
 - Fechar o Bat-Computer para todos os projetos que ele iniciou.
+- Modo compacto: a mesma janela encolhe para uma coluna pequena e redimensionável, com Start/Stop, status e aviso de falha; um alfinete opcional a mantém por cima das outras janelas.
 
 Fora do escopo: bandeja do sistema, iniciar com o Windows, abrir pasta/VS Code, detecção automática de URL nos logs, health check HTTP.
 
@@ -60,9 +61,68 @@ O status não é persistido. Ao abrir o app, todos os projetos começam como PAR
 2. **Detalhes:** cabeçalho com dados e ações, e o painel de logs com auto-scroll. Sair dos detalhes não para o processo.
 3. **Formulário (adicionar/editar):** nome, caminho (colar ou "Procurar..."), comando (lista de scripts do `package.json` + "Outro comando..." livre; só campo livre se não houver `package.json`), URL opcional. A edição fica bloqueada enquanto o projeto está rodando.
 
+4. **Modo compacto:** a janela encolhe para uma coluna (236×170, redimensionável) com uma faixa por projeto: ícone de estado, nome e Start/Stop. Expandir volta ao tamanho anterior, já no log do projeto clicado.
+
 Apagar pede confirmação e para o processo antes, se ele estiver rodando.
 
-Visual: tema "Batcomputador", com fundo quase preto, acentos ciano/âmbar, fonte monoespaçada, cantos retos e brilho sutil nos status. Sem marcas registradas.
+Visual: ver "Direção visual escolhida" abaixo.
+
+## Direção visual escolhida
+
+Decidida na LUC-119, com protótipo descartável no galho `prototype/luc-119-identidade-visual`. A referência completa (tokens, componentes, regras) está em `DESIGN.md`, e a pesquisa de referências em `docs/research/2026-10-24-referencias-visuais-batcomputador.md`.
+
+**Quadro de Faixas.** Cada projeto é uma faixa de controle de tráfego aéreo encaixada na baia do seu estado: ATIVOS, FALHA, EM ESPERA. A posição é o status. É uma sala escura e tática na linha ciano do Batcomputador, com cor chapada: sem brilho, sem pulso, sem marcas da DC.
+
+### Paleta
+
+| Papel | Hex |
+|---|---|
+| Fundo (sala de radar) | `#070B0E` |
+| Painéis laterais / barra superior | `#0A1216` |
+| Face da faixa | `#111C22` (hover/selecionada `#16252E`) |
+| Régua fina / linha de controle | `#1C2B33` / `#263943` |
+| Texto / texto calado / texto apagado | `#DCEBF2` / `#8CA3B0` / `#7A93A3` |
+| Sinal (RODANDO, ação primária, foco) | `#3FD8FF` (hover `#86E8FF`) |
+| Falha (ERRO) | `#FF5C4D` (texto de log `#FF9A90`) |
+| Trânsito (Ligando…/Desligando…) | `#F2B33D` |
+| Suporte PARADO / tinta | `#2A3A43` / `#A9BCC7` |
+| Tinta sobre ciano / vermelho / âmbar | `#03141B` / `#1A0402` / `#1A1203` |
+
+### Fontes
+
+- **Barlow** (interface) e **Barlow Semi Condensed** (títulos, rótulos em caixa alta).
+- **JetBrains Mono** só para dado de máquina: comando, caminho, tempo, contagens e log.
+- No app, as três ficam empacotadas via `@fontsource`, nunca carregadas por `<link>` do Google Fonts.
+
+### Tratamento de cada status
+
+Cada status é dito três vezes: pela baia, pela forma no suporte e pela palavra.
+
+| Status | Baia | Suporte (cor + forma) | Texto |
+|---|---|---|---|
+| RODANDO | ATIVOS | ciano, losango cheio | "Rodando" + tempo no ar |
+| ERRO | FALHA | vermelho, triângulo cheio | "Erro" + código de saída |
+| PARADO | EM ESPERA | ardósia, anel | "Parado" |
+| Ligando… / Desligando… | fica na baia de origem | âmbar, losango vazado | botão desabilitado |
+
+- **Falha não vista:** a faixa fica "torta", deslocada 12px no quadro e 8px na coluna compacta, até o usuário abri-la.
+- **Ligar/desligar:** a faixa desliza para a nova baia em ~300ms. Isso some com "efeitos contidos" ou com `prefers-reduced-motion`.
+
+### Densidade
+
+| Elemento | Medida |
+|---|---|
+| Barra superior | 44px |
+| Faixa (quadro) | 48px |
+| Controles | 30px |
+| Campos | 32px |
+| Quadro na janela média | 430px de largura fixa, log com o resto |
+| Coluna compacta | 236×170 (200×110 a 420×640) |
+| Faixa compacta | 26px |
+| Cabeçalho da coluna | 32px |
+
+- **Janela média (880×580):** o quadro à esquerda e o log ou formulário à direita.
+- **Janela pequena (480×640):** só o quadro; o log e o formulário viram telas próprias.
 
 ## Tratamento de erros
 

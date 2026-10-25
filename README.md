@@ -20,6 +20,7 @@ Um "quadro de luz" para os seus projetos pessoais no Windows. Em vez de abrir o 
 ## Documentação
 
 - Design: [`docs/plans/2026-10-24-bat-computer-design.md`](docs/plans/2026-10-24-bat-computer-design.md)
+- Identidade visual: [`DESIGN.md`](DESIGN.md) (produto em [`PRODUCT.md`](PRODUCT.md))
 
 ## Licença
 
