@@ -86,18 +86,12 @@ typography:
     fontWeight: 700
   mini-name:
     fontFamily: "Barlow, sans-serif"
-    fontSize: "13px"
+    fontSize: "12.5px"
     fontWeight: 600
-    lineHeight: 1.15
-  mini-state:
-    fontFamily: "Barlow Semi Condensed, sans-serif"
-    fontSize: "10.5px"
-    fontWeight: 600
-    lineHeight: 1.1
-    letterSpacing: "0.12em"
+    lineHeight: 1
   alert-count:
     fontFamily: "JetBrains Mono, monospace"
-    fontSize: "12px"
+    fontSize: "11px"
     fontWeight: 700
 rounded:
   holder: "2px"
@@ -213,29 +207,29 @@ components:
   mini-bar:
     backgroundColor: "{colors.rack}"
     textColor: "{colors.ink}"
-    height: "56px"
-    padding: "0 6px 0 8px"
+    height: "36px"
+    padding: "0 4px 0 6px"
   mini-strip:
     backgroundColor: "{colors.strip-face}"
     textColor: "{colors.ink}"
     typography: "{typography.mini-name}"
     rounded: "{rounded.control}"
-    height: "40px"
+    height: "26px"
   mini-holder:
     rounded: "{rounded.holder}"
-    width: "24px"
+    width: "22px"
   mini-alert:
     backgroundColor: "{colors.fault-red}"
     textColor: "{colors.on-red}"
     typography: "{typography.alert-count}"
     rounded: "{rounded.control}"
-    height: "24px"
-    padding: "0 8px"
+    height: "20px"
+    padding: "0 6px"
   mini-more:
     textColor: "{colors.mute}"
     rounded: "{rounded.control}"
-    height: "24px"
-    padding: "0 7px"
+    height: "20px"
+    padding: "0 6px"
   icon-button-pinned:
     textColor: "{colors.signal-cyan}"
     rounded: "{rounded.control}"
@@ -252,7 +246,7 @@ Cada projeto é uma faixa de controle de tráfego aéreo encaixada na baia do se
 
 O mundo é uma sala escura, porque o app vive ao lado do editor à noite. O fundo é quase preto azulado, as baias são trilhos com régua de 1px, as faixas são placas planas divididas em células por linhas finas, e a única cor forte de cada faixa está no suporte da ponta esquerda, que carrega também uma forma (losango, triângulo, anel). Cor chapada, sem halo, sem brilho contínuo. A identidade "Batcomputador" vive nos detalhes (a precisão do quadro, o ciano de sinal, a régua), nunca à custa de ler um log.
 
-A densidade é de ferramenta: faixas de 48px, barra de 44px, controles de 30px, até ~10 projetos cabendo sem rolar. No modo compacto, o mesmo quadro se deita numa barra de 56px que mora na borda da tela, com as faixas lado a lado na ordem das baias. Barlow e Barlow Semi Condensed falam a interface; JetBrains Mono aparece só onde há dado de máquina (comando, caminho, tempo, contagem, log).
+A densidade é de ferramenta: faixas de 48px, barra de 44px, controles de 30px, até ~10 projetos cabendo sem rolar. No modo compacto, o mesmo quadro se deita numa barra de 36px que mora na borda da tela, com as faixas lado a lado na ordem das baias. Barlow e Barlow Semi Condensed falam a interface; JetBrains Mono aparece só onde há dado de máquina (comando, caminho, tempo, contagem, log).
 
 **Key Characteristics:**
 - A posição é o status: três baias fixas, na ordem ATIVOS, FALHA, EM ESPERA.
@@ -319,8 +313,7 @@ As três famílias são self-hosted no app via `@fontsource` (`@fontsource/barlo
 - **Mono command** (400, 11.5px): comando sob o nome na faixa, caminho na transcrição.
 - **Mono input** (400, 12.5px): campos de pasta, comando livre e endereço. O campo Nome usa Barlow 14px, porque nome é texto de gente.
 - **Log** (400, 12px, 1.6) e **Log tag** (700, 10px): ver Componentes.
-- **Mini name** (Barlow 600, 13px, 1.15): nome do projeto na faixa compacta, largura máxima de 108px com reticências.
-- **Mini state** (Semi Condensed 600, 10.5px, 1.1, 0.12em, caixa alta): estado sob o nome na faixa compacta, na cor do estado.
+- **Mini name** (Barlow 600, 12.5px, 1): nome do projeto na faixa compacta, numa linha só, largura máxima de 108px com reticências. A faixa compacta não escreve o estado: ele é dito pela forma, pela cor do suporte e pelo grupo de baia, e por extenso no title e num texto só para leitores de tela.
 - **Alert count** (mono 700, 12px): número do contador de falha ▲N. O "+N" de faixas escondidas usa o mesmo mono 12px em 500.
 
 ### Named Rules
@@ -342,7 +335,7 @@ A janela tem duas formas, e o quadro é a constante.
 
 **Transcrição.** Cabeçalho com 12px/14px de respiro: título à esquerda, ações à direita (Ligar/Desligar com rótulo, abrir no navegador, editar, apagar), caminho em mono na linha de baixo. Depois um grid 2×2 de fatos (Estado, No ar há / Saiu com / Tempo no ar, Comando, Endereço), o cabeçalho LOG com a contagem de linhas, e o log ocupando o resto da altura até a borda. Paineis laterais usam 14px de respiro horizontal.
 
-**Barra compacta (56px de altura).** A mesma janela encolhe para uma barra sem moldura (no Tauri: `decorations` desligado, `data-tauri-drag-region` na barra e na alça). A largura abraça o conteúdo até `min(1040px, 100vw − 200px)`. Da esquerda para a direita, com 4px de vão: alça de arrastar com a marca ciano, alfinete (fixar no topo), contador de falha ▲N (só quando há falha), as faixas compactas, o botão "+N" e expandir na ponta direita. As faixas seguem a ordem das baias (ativos, falha, espera) sem rótulo de baia; a troca de baia é marcada por um traço vertical de 1px e 28px em line, com 4px de cada lado. Na base da barra corre uma régua de tiques (1px a cada 12px, 4px de altura, em line), a régua da baia deitada.
+**Barra compacta (36px de altura).** A mesma janela encolhe para uma barra sem moldura (no Tauri: `decorations` desligado, `data-tauri-drag-region` na barra e na alça). A largura abraça o conteúdo até `min(1040px, 100vw − 200px)`. Da esquerda para a direita, com 3px de vão: alça de arrastar com a marca ciano, alfinete (fixar no topo), contador de falha ▲N (só quando há falha), as faixas compactas, o botão "+N" e expandir na ponta direita. As faixas seguem a ordem das baias (ativos, falha, espera) sem rótulo de baia; a troca de baia é marcada por um traço vertical de 1px e 18px em line, com 4px de cada lado. Na base da barra corre uma régua de tiques (1px a cada 12px, 3px de altura, em line), a régua da baia deitada.
 
 **Transbordo da barra.** As faixas rolam na horizontal sem barra de rolagem nativa; a roda vertical do mouse rola de lado. Quando há faixas fora de vista, a borda correspondente se apaga num esmaecimento de 32px (máscara sobre o conteúdo, não cor de superfície), e o botão "+N" conta as faixas escondidas à direita e rola 80% da largura visível a cada clique. Uma faixa torta é sempre rolada até ficar inteira fora do esmaecimento.
 
@@ -396,15 +389,15 @@ Durante o trânsito, o botão de ligar/desligar fica desabilitado (opacidade 0.4
 **Faixa torta (falha não vista).** Quando um projeto cai para ERRO sem o usuário estar olhando, a faixa entra na baia FALHA recuada 12px para a direita (largura máxima reduzida no mesmo valor), como uma faixa de papel posta torta no trilho para chamar o controlador. Ela se endireita assim que o usuário a abre ou chega nela com ↑↓. É o único aviso de falha: sem pulso, sem piscar.
 
 ### Barra compacta
-O quadro deitado: tudo o que a barra precisa dizer cabe numa linha de 56px.
+O quadro deitado: tudo o que a barra precisa dizer cabe numa linha de 36px.
 - **Barra:** fundo rack, contorno line de 1px em volta, régua de tiques na base, sem sombra. `role="toolbar"`. A barra e a alça são regiões de arrastar a janela.
-- **Alça:** a marca de 18px em ciano, 36px de altura, cursor de agarrar.
-- **Alfinete:** botão-ícone de 30px. Desligado: transparente em tinta calada; hover em strip-face-raised com contorno line e tinta. Ligado: ícone ciano, borda ciano a 45%, fundo ciano a 8%. Liga e desliga "sempre por cima" da janela e reflete o estado em `aria-pressed`; o title alterna entre "Fixar no topo" e "Soltar do topo".
-- **Contador de falha ▲N:** 24px de altura, respiro 0 8px, cantos 3px, fundo fault-red, triângulo de 10px e número em Alert count, ambos em on-red. Só existe com N > 0; clicar abre a primeira falha expandida, já endireitada.
-- **Faixa compacta:** 40px de altura, grid de três células (suporte de 24px, identificação com largura do conteúdo, botão de 30px) divididas por rule; fundo strip-face, contorno rule, cantos 3px. O suporte usa as mesmas cores e formas da faixa grande, com a forma em 10px. A identificação é um botão: nome em Mini name sobre estado em Mini state (respiro 0 8px); hover em strip-face-raised; o title traz nome, estado e tempo no ar. O botão ligar/desligar é transparente em tinta calada (Ligar em ciano), hover com fundo radar-ground; desabilitado durante o trânsito.
-- **Faixa torta compacta:** a falha não vista sobe 6px fora da linha (em vez de recuar 12px) e se endireita quando aberta.
-- **"+N":** 24px, respiro 0 7px, contorno line, cantos 3px, mono 500 12px em tinta calada; hover em tinta com fundo strip-face-raised. Escondido quando nada está fora de vista à direita.
-- **Expandir:** botão-ícone de 30px na ponta direita, mesmo tratamento do alfinete desligado.
+- **Alça:** a marca de 15px em ciano, 26px de altura, cursor de agarrar.
+- **Alfinete:** botão-ícone de 26px. Desligado: transparente em tinta calada; hover em strip-face-raised com contorno line e tinta. Ligado: ícone ciano, borda ciano a 45%, fundo ciano a 8%. Liga e desliga "sempre por cima" da janela e reflete o estado em `aria-pressed`; o title alterna entre "Fixar no topo" e "Soltar do topo".
+- **Contador de falha ▲N:** 20px de altura, respiro 0 6px, cantos 3px, fundo fault-red, triângulo de 9px e número em Alert count, ambos em on-red. Só existe com N > 0; clicar abre a primeira falha expandida, já endireitada.
+- **Faixa compacta:** 26px de altura, uma linha só, grid de três células (suporte de 22px, identificação com largura do conteúdo, botão de 26px) divididas por rule; fundo strip-face, contorno rule, cantos 3px. O suporte usa as mesmas cores e formas da faixa grande, com a forma em 9px. A identificação é um botão: nome em Mini name (respiro 0 8px), estado só no title e em texto para leitores de tela; hover em strip-face-raised; o title traz nome, estado e tempo no ar. O botão ligar/desligar é transparente em tinta calada (Ligar em ciano), hover com fundo radar-ground; desabilitado durante o trânsito.
+- **Faixa torta compacta:** a falha não vista sobe 4px fora da linha (em vez de recuar 12px) e se endireita quando aberta.
+- **"+N":** 20px, respiro 0 6px, contorno line, cantos 3px, mono 500 11px em tinta calada; hover em tinta com fundo strip-face-raised. Escondido quando nada está fora de vista à direita.
+- **Expandir:** botão-ícone de 26px na ponta direita, mesmo tratamento do alfinete desligado.
 - **Vazio:** "Nenhum projeto ainda." em Barlow 13px apagado e o botão primário "Cadastrar projeto".
 
 ### Barra superior
@@ -465,8 +458,8 @@ Desenhados para o app, em SVG próprio: grade de 16×16, sem preenchimento, tra�
 ### Do:
 - **Do** pôr o status em três canais ao mesmo tempo: baia, cor+forma do suporte e texto.
 - **Do** manter as três baias sempre visíveis e na ordem ATIVOS, FALHA, EM ESPERA, com caixa tracejada quando vazias.
-- **Do** usar 48px para a faixa, 44px para a barra superior, 30px para controles, 32px para campos e 430px para o quadro na janela média; na barra compacta, 56px para a barra e 40px para a faixa.
-- **Do** marcar uma falha não vista entortando a faixa 12px (subindo 6px na barra compacta), e endireitá-la quando o usuário a vê.
+- **Do** usar 48px para a faixa, 44px para a barra superior, 30px para controles, 32px para campos e 430px para o quadro na janela média; na barra compacta, 36px para a barra e 26px para a faixa.
+- **Do** marcar uma falha não vista entortando a faixa 12px (subindo 4px na barra compacta), e endireitá-la quando o usuário a vê.
 - **Do** manter na barra compacta a ordem das baias, o traço de 1px entre baias e a faixa torta sempre rolada para fora do esmaecimento.
 - **Do** separar células e superfícies com linhas de 1px (rule, line) e subir um degrau de tom para destacar.
 - **Do** usar algarismos tabulares em tudo e JetBrains Mono só em comando, caminho, endereço, tempo, código, contagem e log.

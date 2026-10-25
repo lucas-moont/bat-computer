@@ -577,35 +577,32 @@ body{background:#2b2b2f;background-image:radial-gradient(#3a3a40 1px,transparent
 .vD .d-menu .danger{color:var(--red)}
 .vD .toast{background:var(--face2);border:1px solid var(--line);border-radius:3px;padding:8px 14px;font-size:13px;box-shadow:0 10px 28px rgba(0,0,0,.55)}
 .vD.size-c{overflow:visible}
-.vD .m-bar{height:56px;display:flex;align-items:center;gap:4px;padding:0 6px 0 8px;background-color:var(--rack);border:1px solid var(--line);
-  background-image:repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px 12px);background-size:100% 4px;background-position:0 100%;background-repeat:no-repeat}
-.vD .m-grip{display:flex;align-items:center;height:36px;padding:0 6px;color:var(--cyan);cursor:grab}
-.vD .m-ib{width:30px;height:30px;display:grid;place-items:center;background:none;border:1px solid transparent;border-radius:3px;color:var(--mute);flex:none}
+.vD .m-bar{height:36px;display:flex;align-items:center;gap:3px;padding:0 4px 0 6px;background-color:var(--rack);border:1px solid var(--line);
+  background-image:repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px 12px);background-size:100% 3px;background-position:0 100%;background-repeat:no-repeat}
+.vD .m-grip{display:flex;align-items:center;height:26px;padding:0 4px;color:var(--cyan);cursor:grab}
+.vD .m-ib{width:26px;height:26px;display:grid;place-items:center;background:none;border:1px solid transparent;border-radius:3px;color:var(--mute);flex:none}
 .vD .m-ib:hover{background:var(--face2);border-color:var(--line);color:var(--ink)}
 .vD .m-ib.on{color:var(--cyan);border-color:rgba(63,216,255,.45);background:rgba(63,216,255,.08)}
-.vD .m-alert{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 8px;margin:0 2px;border:0;border-radius:3px;background:var(--red);color:var(--on-red);font:700 12px "JetBrains Mono",monospace;flex:none}
-.vD .m-alert .sh{width:10px;height:10px}
-.vD .m-strips{display:flex;align-items:center;gap:4px;overflow-x:auto;max-width:min(1040px,calc(100vw - 200px));padding:10px 4px 6px;scrollbar-width:none}
+.vD .m-alert{display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 6px;margin:0 2px;border:0;border-radius:3px;background:var(--red);color:var(--on-red);font:700 11px "JetBrains Mono",monospace;flex:none}
+.vD .m-alert .sh{width:9px;height:9px}
+.vD .m-strips{display:flex;align-items:center;gap:4px;overflow-x:auto;max-width:min(1040px,calc(100vw - 200px));padding:6px 4px 2px;scrollbar-width:none}
 .vD .m-strips::-webkit-scrollbar{display:none}
 .vD .m-strips.ovf-r{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 32px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 32px),transparent)}
 .vD .m-strips.ovf-l{-webkit-mask-image:linear-gradient(90deg,transparent,#000 32px);mask-image:linear-gradient(90deg,transparent,#000 32px)}
 .vD .m-strips.ovf-l.ovf-r{-webkit-mask-image:linear-gradient(90deg,transparent,#000 32px,#000 calc(100% - 32px),transparent);mask-image:linear-gradient(90deg,transparent,#000 32px,#000 calc(100% - 32px),transparent)}
-.vD .m-more{flex:none;height:24px;padding:0 7px;display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:3px;background:none;color:var(--mute);font:500 12px "JetBrains Mono",monospace}
+.vD .m-more{flex:none;height:20px;padding:0 6px;display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:3px;background:none;color:var(--mute);font:500 11px "JetBrains Mono",monospace}
 .vD .m-more[hidden]{display:none}
 .vD .m-more:hover{color:var(--ink);background:var(--face2)}
-.vD .m-add{flex:none;margin-right:6px}
-.vD .m-gap{width:1px;height:28px;background:var(--line);margin:0 4px;flex:none}
-.vD .m-strip{display:grid;grid-template-columns:24px auto 30px;height:40px;flex:none;position:relative;top:0;background:var(--face);border:1px solid var(--rule);border-radius:3px}
+.vD .m-add{flex:none;margin-right:4px;height:26px}
+.vD .m-gap{width:1px;height:18px;background:var(--line);margin:0 4px;flex:none}
+.vD .m-strip{display:grid;grid-template-columns:22px auto 26px;height:26px;flex:none;position:relative;top:0;background:var(--face);border:1px solid var(--rule);border-radius:3px}
 .vD .m-strip>*+*{border-left:1px solid var(--rule)}
-.vD .m-strip.cocked{top:-6px}
-.vD .m-strip .sh{width:10px;height:10px}
-.vD .m-name{display:flex;flex-direction:column;justify-content:center;gap:1px;min-width:0;padding:0 8px;background:none;border:0;text-align:left}
+.vD .m-strip.cocked{top:-4px}
+.vD .m-strip .sh{width:9px;height:9px}
+.vD .m-name{display:flex;align-items:center;min-width:0;padding:0 8px;background:none;border:0;text-align:left}
 .vD .m-name:hover{background:var(--face2)}
-.vD .m-name b{max-width:108px;font:600 13px/1.15 "Barlow",sans-serif;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.vD .m-name em{font:600 10.5px/1.1 "Barlow Semi Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;font-style:normal;color:var(--slatei)}
-.vD .m-strip.st-run .m-name em{color:var(--cyan)}
-.vD .m-strip.st-err .m-name em{color:var(--red)}
-.vD .m-strip.st-busy .m-name em{color:var(--amber)}
+.vD .m-name b{max-width:108px;font:600 12.5px/1 "Barlow",sans-serif;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vD .m-name em{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .vD .m-tog{display:grid;place-items:center;background:none;border:0;border-radius:0 2px 2px 0;color:var(--mute)}
 .vD .m-tog.go{color:var(--cyan)}
 .vD .m-tog:hover:not(:disabled){background:var(--g);color:var(--ink)}
@@ -1092,7 +1089,7 @@ function dMini(){
     last = k; items += mStrip(p);
   }));
   return `<div class="m-bar" role="toolbar" aria-label="Bat-Computer compacto" data-tauri-drag-region>
-    <span class="m-grip" title="Arraste para mover" data-tauri-drag-region>${MARK}</span>
+    <span class="m-grip" title="Arraste para mover" data-tauri-drag-region>${MARK.replace('width="18" height="18"', 'width="15" height="15"')}</span>
     <button class="m-ib${S.pin ? ' on' : ''}" data-act="pin" aria-pressed="${!!S.pin}" title="${S.pin ? 'Soltar do topo' : 'Fixar no topo'}" aria-label="Fixar no topo">${ic('pin')}</button>
     ${n.err ? `<button class="m-alert" data-act="open-err" title="Ver a falha" aria-label="${n.err} em falha">${SHAPE.err}${n.err}</button>` : ''}
     <div class="m-strips" data-scroll="mini">${items || '<span class="m-none">Nenhum projeto ainda.</span>'}</div>
