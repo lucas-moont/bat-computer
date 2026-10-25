@@ -1154,7 +1154,7 @@ function render(){
   win.classList.toggle('c', S.size === 'c');
   if (S.size === 'c') {
     const st = app.querySelector('.m-list'), ck = app.querySelector('.m-strip.cocked');
-    if (st && ck) { const y = ck.offsetTop - st.offsetTop, fade = 32; if (y < st.scrollTop + fade || y + ck.offsetHeight > st.scrollTop + st.clientHeight - fade) st.scrollTop = y - st.clientHeight / 2; }
+    if (st && ck) { const y = ck.offsetTop - st.offsetTop, fade = 28; if (y < st.scrollTop + fade || y + ck.offsetHeight > st.scrollTop + st.clientHeight - fade) st.scrollTop = y - st.clientHeight / 2; }
     miniOverflow();
     const box = app.querySelector('.m-box');
     if (box) { render.ro?.disconnect(); render.ro = new ResizeObserver(() => { S.miniSize = { w: box.offsetWidth, h: box.offsetHeight }; miniOverflow(); }); render.ro.observe(box); }

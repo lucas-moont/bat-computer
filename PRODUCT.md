@@ -33,7 +33,7 @@ Não é um gerenciador de processos genérico nem um painel de DevOps. É pequen
 - Status: PARADO, RODANDO, ERRO. RODANDO significa "processo vivo", não "servidor respondendo".
 - Botão "Abrir no navegador" só quando há URL e o projeto está rodando.
 - A edição fica bloqueada enquanto o projeto roda; apagar pede confirmação e para o processo antes.
-- Modo compacto: a mesma janela encolhe para uma barra baixa, com ligar/desligar, status e aviso de falha; um alfinete opcional a mantém por cima das outras janelas. Expandir volta à janela completa.
+- Modo compacto: a mesma janela encolhe para uma coluna pequena e redimensionável (a janela pequena em miniatura), com ligar/desligar, status por ícone e aviso de falha; um alfinete opcional a mantém por cima das outras janelas. Expandir volta ao tamanho anterior.
 - Fora da v1: bandeja do sistema, iniciar com o Windows, abrir pasta/VS Code, detecção de URL nos logs, health check.
 - Stack: Tauri 2 + React + TypeScript + Vite (ver `docs/plans/2026-10-24-bat-computer-design.md`).
 
