@@ -15,7 +15,7 @@
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Special+Elite&family=Courier+Prime:wght@400;700&family=Chakra+Petch:wght@400;500;600;700&family=Share+Tech+Mono&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Special+Elite&family=Courier+Prime:wght@400;700&family=Chakra+Petch:wght@400;500;600;700&family=Share+Tech+Mono&family=JetBrains+Mono:wght@400;500;700&family=Barlow:wght@400;500;600&family=Barlow+Semi+Condensed:wght@500;600&display=swap" rel="stylesheet">
 <style>
 /* ---------- moldura do protótipo (neutra, não faz parte do design) ---------- */
 *{box-sizing:border-box}
@@ -431,11 +431,172 @@ body{background:#2b2b2f;background-image:radial-gradient(#3a3a40 1px,transparent
 .vC.fx .c-row.sel{box-shadow:inset 0 0 20px rgba(79,209,224,.06)}
 .vC.fx .c-logo{text-shadow:0 0 12px rgba(79,209,224,.35)}
 .vC.fx .ln.err{border-left:2px solid var(--red)}
+
+/* ======================================================================
+   D · QUADRO DE FAIXAS (escolhida: faixas de controle de voo, ciano tático)
+   ====================================================================== */
+.vD{--g:#070B0E;--rack:#0A1216;--face:#111C22;--face2:#16252E;--rule:#1C2B33;--line:#263943;--ink:#DCEBF2;--mute:#8CA3B0;--dim:#7A93A3;
+  --cyan:#3FD8FF;--red:#FF5C4D;--amber:#F2B33D;--slate:#2A3A43;--slatei:#A9BCC7;
+  background:var(--g);color:var(--ink);font:14px/1.4 "Barlow",sans-serif;font-variant-numeric:tabular-nums}
+.vD code,.vD .mono,.vD .log{font-family:"JetBrains Mono",monospace}
+.vD code{font-size:11.5px}
+.vD ::selection{background:rgba(63,216,255,.3);color:#fff}
+.vD *{scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.vD ::-webkit-scrollbar{width:10px;height:10px}
+.vD ::-webkit-scrollbar-thumb{background:var(--line);border:3px solid var(--g);border-radius:6px}
+.vD :focus-visible{outline:1px solid var(--cyan);outline-offset:2px}
+.vD input{caret-color:var(--cyan)}
+.vD .ic{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.vD .sh{width:12px;height:12px;display:block}
+.vD .dim{color:var(--dim)}
+.vD .d-root{height:100%;display:grid;grid-template-rows:44px minmax(0,1fr);position:relative}
+.vD .d-top{display:flex;align-items:center;gap:12px;padding:0 12px 0 14px;border-bottom:1px solid var(--rule);background:var(--rack)}
+.vD .d-mark{color:var(--cyan);display:flex}
+.vD .d-name{font:600 15px "Barlow Semi Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.vD .d-sum{color:var(--mute);font-size:13px}
+.vD .d-clock{margin-left:auto;color:var(--dim);font-size:12px}
+.vD .d-btn{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;background:var(--face2);border:1px solid var(--line);color:var(--ink);font:500 13px "Barlow",sans-serif;border-radius:3px;white-space:nowrap;transition:background .15s,border-color .15s}
+.vD .d-btn:hover:not(:disabled){background:#1C2F3A;border-color:#3A5664}
+.vD .d-btn.go{color:var(--cyan);border-color:rgba(63,216,255,.45)}
+.vD .d-btn.go:hover:not(:disabled){background:rgba(63,216,255,.1);border-color:var(--cyan)}
+.vD .d-btn.pri{background:var(--cyan);border-color:var(--cyan);color:#03141B;font-weight:600}
+.vD .d-btn.pri:hover:not(:disabled){background:#86E8FF;border-color:#86E8FF}
+.vD .d-btn.danger{color:var(--red)}
+.vD .d-btn.danger-fill{background:var(--red);border-color:var(--red);color:#1A0402;font-weight:600}
+.vD .d-ib{width:30px;padding:0;justify-content:center}
+.vD .d-body{display:grid;grid-template-columns:430px minmax(0,1fr);min-height:0}
+.vD .d-body:not(.solo) .d-board .d-strip{grid-template-columns:30px minmax(0,1fr) 104px auto}
+.vD .d-body:not(.solo) .d-board .d-port{display:none}
+.vD .d-body.solo{grid-template-columns:1fr}
+.vD .d-board{overflow:auto;padding:12px 12px 18px;display:flex;flex-direction:column;gap:16px;min-height:0}
+.vD .d-bayh{display:flex;align-items:center;gap:8px;height:20px;margin-bottom:6px}
+.vD .d-bayh h2{margin:0;font:600 12px "Barlow Semi Condensed",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.vD .b-run .d-bayh h2{color:var(--cyan)}
+.vD .b-err .d-bayh h2{color:var(--red)}
+.vD .d-bayh .n{font:500 12px "JetBrains Mono",monospace;color:var(--ink)}
+.vD .d-bayh .rule{flex:1;height:6px;background:linear-gradient(var(--line),var(--line)) 0 100%/100% 1px no-repeat,
+  repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px 12px) 0 100%/100% 5px no-repeat}
+.vD .d-slots{display:flex;flex-direction:column;gap:4px}
+.vD .d-vazio{height:32px;border:1px dashed var(--line);border-radius:3px;display:flex;align-items:center;padding:0 12px;color:var(--dim);font-size:13px}
+.vD .d-strip{display:grid;grid-template-columns:30px minmax(0,1fr) 112px 60px auto;height:48px;background:var(--face);border:1px solid var(--rule);border-radius:3px;cursor:pointer;transition:background .15s,border-color .15s}
+.vD .d-strip>*+*{border-left:1px solid var(--rule)}
+.vD .d-strip:hover{background:var(--face2);border-color:var(--line)}
+.vD .d-strip.sel{background:var(--face2);border-color:rgba(63,216,255,.6)}
+.vD .d-strip.cocked{margin-left:12px;max-width:calc(100% - 12px)}
+.vD .d-hold{display:grid;place-items:center;background:var(--slate);color:var(--slatei);border-radius:2px 0 0 2px}
+.vD .st-run .d-hold{background:var(--cyan);color:#03141B}
+.vD .st-err .d-hold{background:var(--red);color:#1A0402}
+.vD .st-busy .d-hold{background:var(--amber);color:#1A1203}
+.vD .d-id{display:flex;flex-direction:column;justify-content:center;gap:1px;padding:0 12px;min-width:0}
+.vD .d-id b{font-weight:600;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vD .d-id code{color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vD .d-cell{display:flex;flex-direction:column;justify-content:center;gap:1px;padding:0 10px;min-width:0}
+.vD .d-cell em{font:600 11px "Barlow Semi Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;font-style:normal;color:var(--slatei)}
+.vD .d-cell .mono{font-size:12px}
+.vD .st-run .d-state em{color:var(--cyan)}
+.vD .st-err .d-state em{color:var(--red)}
+.vD .st-busy .d-state em{color:var(--amber)}
+.vD .d-port{font:12px "JetBrains Mono",monospace;color:var(--mute)}
+.vD .d-acts{display:flex;align-items:center;gap:2px;padding:0 6px}
+.vD .d-acts .d-btn{height:30px;background:transparent;border-color:transparent;color:var(--mute)}
+.vD .d-acts .d-btn:hover:not(:disabled){background:var(--g);border-color:var(--line);color:var(--ink)}
+.vD .d-acts .d-btn.go{color:var(--cyan)}
+.vD .d-ph{width:30px}
+.vD .d-empty{margin:auto;max-width:420px;display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:24px}
+.vD .d-ghost{width:100%;display:grid;grid-template-columns:30px 1fr 112px;height:48px;border:1px dashed var(--line);border-radius:3px;margin-bottom:8px}
+.vD .d-ghost>*+*{border-left:1px dashed var(--line)}
+.vD .d-ghost .d-hold{background:none;border-radius:0}
+.vD .d-empty h2{margin:0;font:600 20px "Barlow Semi Condensed",sans-serif}
+.vD .d-empty p{margin:0 0 6px;color:var(--mute);line-height:1.5}
+.vD .d-tx,.vD .d-form{border-left:1px solid var(--rule);background:var(--rack);display:flex;flex-direction:column;min-height:0;min-width:0}
+.vD .d-txh{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;column-gap:10px;padding:12px 14px 10px}
+.vD .d-path{grid-column:1/-1;color:var(--mute);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vD .d-txid{min-width:0}
+.vD .d-txid h1{margin:0;font:600 20px/1.2 "Barlow Semi Condensed",sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vD .d-txid code{color:var(--mute);display:block;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vD .d-txacts{display:flex;gap:4px;flex:none}
+.vD .d-back{display:inline-flex;align-items:center;gap:4px;background:none;border:0;padding:0;margin:0 0 6px -3px;color:var(--mute);font:500 13px "Barlow",sans-serif}
+.vD .d-back:hover{color:var(--ink)}
+.vD .d-confirm{margin:0 14px 10px;padding:8px 8px 8px 12px;border:1px solid rgba(255,92,77,.55);background:rgba(255,92,77,.07);border-radius:3px;display:flex;align-items:center;gap:6px;font-size:13px}
+.vD .d-confirm span{flex:1}
+.vD .d-facts{display:grid;grid-template-columns:1fr 1fr;margin:0 14px 12px;border:1px solid var(--rule);border-radius:3px;background:var(--face)}
+.vD .d-facts>div{padding:7px 10px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.vD .d-facts>div:nth-child(even){border-left:1px solid var(--rule)}
+.vD .d-facts>div:nth-child(n+3){border-top:1px solid var(--rule)}
+.vD .d-facts em{font:600 10.5px "Barlow Semi Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;font-style:normal;color:var(--dim)}
+.vD .d-facts code{color:var(--ink);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vD .d-st{display:flex;align-items:center;gap:7px;font-weight:600;color:var(--slatei)}
+.vD .d-facts.st-run .d-st{color:var(--cyan)}
+.vD .d-facts.st-err .d-st{color:var(--red)}
+.vD .d-facts.st-busy .d-st{color:var(--amber)}
+.vD .d-logh{display:flex;align-items:baseline;justify-content:space-between;padding:0 14px 6px}
+.vD .d-logh h2{margin:0;font:600 12px "Barlow Semi Condensed",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.vD .d-logh .mono{font-size:11px;color:var(--dim)}
+.vD .log{flex:1;background:var(--g);border-top:1px solid var(--rule);padding:6px 0 10px;font-size:12px;line-height:1.6}
+.vD .ln{grid-template-columns:104px minmax(0,1fr);padding:0 14px;word-break:normal;overflow-wrap:anywhere}
+.vD .ln .n{display:none}
+.vD .ln .t{color:var(--dim)}
+.vD .ln.err{background:rgba(255,92,77,.07)}
+.vD .ln.err .x{color:#FF9A90}
+.vD .ln.err .t::after{content:"ERR";margin-left:6px;font-size:10px;font-weight:700;color:var(--red)}
+.vD .ln.sys .x{color:var(--amber)}
+.vD .ln.sys .t::after{content:"SYS";margin-left:6px;font-size:10px;font-weight:700;color:var(--amber)}
+.vD .log-empty{padding:28px 16px;color:var(--dim);text-align:center;font-family:"Barlow",sans-serif;font-size:13px}
+.vD .d-fbody{flex:1;overflow:auto;padding:2px 14px 14px;display:flex;flex-direction:column;gap:14px}
+.vD .d-preview{display:flex;flex-direction:column;gap:6px}
+.vD .d-preview .d-strip{grid-template-columns:30px minmax(0,1fr) 100px;cursor:default;border-style:dashed}
+.vD .d-preview small{color:var(--dim);font-size:12px}
+.vD .d-f{display:flex;flex-direction:column;gap:5px}
+.vD .d-f>span{font:600 11px "Barlow Semi Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.vD .d-f>span small{font:400 12px "Barlow";letter-spacing:0;text-transform:none;color:var(--dim);margin-left:4px}
+.vD .d-f input{height:32px;background:var(--g);border:1px solid var(--line);border-radius:3px;padding:0 9px;font:12.5px "JetBrains Mono",monospace;outline:none;width:100%}
+.vD .d-f input[data-f=name]{font:14px "Barlow",sans-serif}
+.vD .d-f input::placeholder{color:#7A93A3}
+.vD .d-f input:focus{border-color:var(--cyan)}
+.vD .d-f input:disabled{opacity:.5}
+.vD .d-inrow{display:flex;gap:6px}
+.vD .d-hint{margin:0;color:var(--dim);font-size:12.5px}
+.vD .d-opts{border:1px solid var(--line);border-radius:3px;background:var(--g);overflow:hidden}
+.vD .d-opt{display:flex;align-items:center;gap:10px;width:100%;height:32px;padding:0 10px;background:none;border:0;text-align:left;font:13px "Barlow",sans-serif}
+.vD .d-opt+.d-opt{border-top:1px solid var(--rule)}
+.vD .d-opt code{font-size:12.5px;color:var(--ink)}
+.vD .d-opt i{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--dim);flex:none}
+.vD .d-opt.on{background:var(--face2)}
+.vD .d-opt.on i{border-color:var(--cyan);background:radial-gradient(var(--cyan) 0 3px,transparent 3.5px)}
+.vD .d-opt:hover:not(:disabled){background:var(--face)}
+.vD .d-note{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:3px;font-size:13px;border:1px solid rgba(242,179,61,.5);color:var(--amber);background:rgba(242,179,61,.06)}
+.vD .d-note span{flex:1}
+.vD .d-note .d-btn{height:28px}
+.vD .d-note.err{border-color:rgba(255,92,77,.55);color:#FF9A90;background:rgba(255,92,77,.07)}
+.vD .d-ffoot{display:flex;justify-content:flex-end;gap:6px;padding:10px 14px;border-top:1px solid var(--rule)}
+.vD .d-menu{right:auto;top:auto;background:var(--face2);border:1px solid var(--line);border-radius:3px;padding:4px;box-shadow:0 10px 28px rgba(0,0,0,.55);min-width:150px}
+.vD .d-menu button{display:flex;align-items:center;gap:8px;padding:7px 10px;font:13px "Barlow",sans-serif;border-radius:2px}
+.vD .d-menu button:hover{background:#1F3340}
+.vD .d-menu .danger{color:var(--red)}
+.vD .toast{background:var(--face2);border:1px solid var(--line);border-radius:3px;padding:8px 14px;font-size:13px;box-shadow:0 10px 28px rgba(0,0,0,.55)}
+.vD.size-p .d-body{grid-template-columns:1fr}
+.vD.size-p .d-tx,.vD.size-p .d-form{border-left:0}
+.vD.size-p .d-sum,.vD.size-p .d-clock{display:none}
+.vD.size-p .d-top .d-btn.pri{margin-left:auto}
+.vD.size-p .d-strip{grid-template-columns:30px minmax(0,1fr) 100px auto}
+.vD.size-p .d-strip .d-port{display:none}
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute">
   <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="2.4"/></filter>
+  <symbol id="i-play" viewBox="0 0 16 16"><path d="M5 3.5v9l7.5-4.5z"/></symbol>
+  <symbol id="i-stop" viewBox="0 0 16 16"><rect x="4" y="4" width="8" height="8" rx="1"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 16 16"><path d="M9 2.5h4.5V7M13.5 2.5 7.5 8.5M11.5 9.5v4h-9v-9h4"/></symbol>
+  <symbol id="i-more" viewBox="0 0 16 16"><path d="M3.5 8h.01M8 8h.01M12.5 8h.01" stroke-width="2.4"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 16 16"><path d="M10.5 2.5l3 3L6 13H3v-3z"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 16 16"><path d="M2.5 4.5h11M6 4.5V2.5h4v2M4 4.5l.8 9h6.4l.8-9"/></symbol>
+  <symbol id="i-back" viewBox="0 0 16 16"><path d="M10 3.5 5.5 8l4.5 4.5"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 16 16"><path d="M2 3.5h4.5L8 5h6v7.5H2z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 16 16"><rect x="3.5" y="7" width="9" height="6.5" rx="1"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></symbol>
+  <symbol id="i-log" viewBox="0 0 16 16"><path d="M3 4h10M3 8h10M3 12h6"/></symbol>
 </svg>
 
 <div class="win" id="win">
@@ -451,7 +612,7 @@ const ts = d => new Date(d).toTimeString().slice(0, 8);
 
 const PROJ = [
   { id:'p1', name:'portfolio-site', path:'C:\\Projetos\\portfolio-site', command:'npm run dev', url:'http://localhost:5173', status:'RODANDO', since:T0-42*60e3-17e3, scripts:['dev','build','preview','lint'] },
-  { id:'p2', name:'api-financas', path:'C:\\Projetos\\api-financas', command:'npm run start', url:'http://localhost:3000', status:'ERRO', exitCode:1, scripts:['start','dev','test'] },
+  { id:'p2', name:'api-financas', path:'C:\\Projetos\\api-financas', command:'npm run start', url:'http://localhost:3000', status:'ERRO', exitCode:1, cocked:true, scripts:['start','dev','test'] },
   { id:'p3', name:'notas-electron', path:'C:\\Projetos\\notas-electron', command:'npm run electron', url:'', status:'PARADO', scripts:['dev','electron','build'] },
   { id:'p4', name:'bot-discord', path:'C:\\Projetos\\bot-discord', command:'npm run dev', url:'', status:'RODANDO', since:T0-3*3600e3-8*60e3, scripts:['dev','start'] },
   { id:'p5', name:'painel-oee', path:'C:\\Projetos\\painel-oee', command:'python -m http.server 8080', url:'http://localhost:8080', status:'PARADO', scripts:[] },
@@ -497,7 +658,7 @@ const POOL = {
 // ---------------- estado ----------------
 const Q = new URLSearchParams(location.search);
 const S = {
-  variant: ['A','B','C'].includes((Q.get('variant')||'').toUpperCase()) ? Q.get('variant').toUpperCase() : 'A',
+  variant: ['A','B','C','D'].includes((Q.get('variant')||'').toUpperCase()) ? Q.get('variant').toUpperCase() : 'D',
   screen: ['list','detail','form'].includes(Q.get('screen')) ? Q.get('screen') : 'list',
   fx: Q.get('fx') !== '0', size: Q.get('size') === 'p' ? 'p' : 'm', empty: Q.get('empty') === '1',
   sel:'p1', menu:null, confirm:null, form:null, toast:null, boot:false,
@@ -548,7 +709,7 @@ function menuHtml(p){
 function overlays(){
   let h = '';
   const p = PROJ.find(x => x.id === S.confirm);
-  if (p) h += `<div class="ov"><div class="dlg"><h3>Apagar ${esc(p.name)}?</h3><p>${isOn(p) ? 'Ele está rodando: o processo será parado antes. ' : ''}Os logs também somem.</p>
+  if (p && S.variant !== 'D') h += `<div class="ov"><div class="dlg"><h3>Apagar ${esc(p.name)}?</h3><p>${isOn(p) ? 'Ele está rodando: o processo será parado antes. ' : ''}Os logs também somem.</p>
     <div class="acts"><button class="no" data-act="del-no">Cancelar</button><button class="yes" data-act="del-yes" data-id="${p.id}">Apagar</button></div></div></div>`;
   if (S.toast) h += `<div class="toast" key="${S.toast.k}">${esc(S.toast.msg)}</div>`;
   if (S.boot) h += `<div class="boot"><div>&gt; NÚCLEO DE PROJETOS <span>…OK</span></div><div>&gt; SUPERVISOR DE PROCESSOS <span>…OK</span></div>
@@ -763,11 +924,136 @@ function cRender(){
   </div>`;
 }
 
+// =====================================================================
+// D · Quadro de Faixas
+// =====================================================================
+const SHAPE = {
+  run:'<svg class="sh" viewBox="0 0 12 12"><path d="M6 .8 11.2 6 6 11.2.8 6z" fill="currentColor"/></svg>',
+  err:'<svg class="sh" viewBox="0 0 12 12"><path d="M6 1.2 11.4 10.6H.6z" fill="currentColor"/></svg>',
+  stop:'<svg class="sh" viewBox="0 0 12 12"><circle cx="6" cy="6" r="4.1" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>',
+  busy:'<svg class="sh" viewBox="0 0 12 12"><path d="M6 1.6 10.4 6 6 10.4 1.6 6z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>',
+};
+const MARK = `<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.2">
+  <rect x="5.5" y="1.5" width="11" height="4"/><rect x="5.5" y="7" width="11" height="4"/><rect x="5.5" y="12.5" width="11" height="4"/></g>
+  <rect x="1.5" y="1.5" width="3" height="4" fill="currentColor"/><rect x="1.5" y="7" width="3" height="4" fill="currentColor" opacity=".45"/><rect x="1.5" y="12.5" width="3" height="4" fill="currentColor" opacity=".45"/></svg>`;
+const ic = n => `<svg class="ic" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const port = u => (u.match(/:(\d+)/) || [])[1];
+const dState = p => p.pending === 'start' ? 'Ligando' : p.pending === 'stop' ? 'Desligando' : { RODANDO:'Rodando', ERRO:'Erro', PARADO:'Parado' }[p.status];
+const dTime = p => isOn(p) ? `<span class="mono" data-up="${p.id}">${uptime(p)}</span>` : p.status === 'ERRO' ? `<span class="mono">código ${p.exitCode}</span>` : `<span class="mono dim">—</span>`;
+const dTogLabel = p => p.pending === 'start' ? 'Ligando…' : p.pending === 'stop' ? 'Desligando…' : isOn(p) ? 'Desligar' : 'Ligar';
+const DBAYS = [
+  ['run', 'Ativos', 'Nenhum projeto rodando.', p => p.status === 'RODANDO'],
+  ['err', 'Falha', 'Nenhuma falha.', p => p.status === 'ERRO'],
+  ['stop', 'Em espera', 'Nada em espera.', p => p.status === 'PARADO'],
+];
+function dStrip(p){
+  const k = stc(p), on = isOn(p);
+  return `<div class="d-strip st-${k}${p.id === S.sel ? ' sel' : ''}${p.cocked ? ' cocked' : ''}" data-act="open" data-id="${p.id}" data-flip="${p.id}" role="button" tabindex="0" aria-label="${esc(p.name)}: ${dState(p)}">
+    <span class="d-hold">${SHAPE[k]}</span>
+    <span class="d-id"><b>${esc(p.name)}</b><code>${esc(p.command)}</code></span>
+    <span class="d-cell d-state"><em>${dState(p)}</em>${dTime(p)}</span>
+    <span class="d-cell d-port">${p.url ? ':' + port(p.url) : '—'}</span>
+    <span class="d-acts">
+      ${canOpen(p) ? `<button class="d-btn d-ib" data-act="url" data-id="${p.id}" title="Abrir no navegador" aria-label="Abrir no navegador">${ic('ext')}</button>` : '<span class="d-ph"></span>'}
+      <button class="d-btn d-ib${on ? '' : ' go'}" data-act="toggle" data-id="${p.id}" title="${dTogLabel(p)}" aria-label="${dTogLabel(p)}" ${p.pending ? 'disabled' : ''}>${ic(on ? 'stop' : 'play')}</button>
+      <button class="d-btn d-ib" data-act="menu" data-id="${p.id}" title="Mais ações" aria-label="Mais ações">${ic('more')}</button>
+    </span>
+  </div>`;
+}
+function dBoard(){
+  const ps = projects();
+  if (!ps.length) return `<div class="d-board"><div class="d-empty">
+    <div class="d-ghost" aria-hidden="true"><span class="d-hold"></span><span></span><span></span></div>
+    <h2>Cada projeto vira uma faixa.</h2>
+    <p>Cadastre a pasta e o comando uma vez. Depois é só ligar, desligar e ler o log daqui, sem abrir o cmd.</p>
+    <button class="d-btn pri" data-act="add">${ic('plus')}Cadastrar o primeiro projeto</button></div></div>`;
+  return `<div class="d-board" data-scroll="board">${DBAYS.map(([k, label, none, f]) => {
+    const xs = ps.filter(f);
+    return `<section class="d-bay b-${k}" aria-label="${label}"><header class="d-bayh"><h2>${label}</h2><span class="n">${xs.length}</span><span class="rule"></span></header>
+      <div class="d-slots">${xs.length ? xs.map(dStrip).join('') : `<div class="d-vazio">${none}</div>`}</div></section>`;
+  }).join('')}</div>`;
+}
+function dTop(){
+  const ps = projects(), n = counts();
+  return `<header class="d-top"><span class="d-mark">${MARK}</span><b class="d-name">Bat-Computer</b>
+    ${ps.length ? `<span class="d-sum">${n.run} ${n.run === 1 ? 'ativo' : 'ativos'} · ${n.err} em falha · ${ps.length - n.run - n.err} em espera</span>` : ""}
+    <span class="d-clock mono" data-clock></span>
+    <button class="d-btn pri" data-act="add">${ic('plus')}Novo projeto</button></header>`;
+}
+function dTx(p, back){
+  const on = isOn(p);
+  return `<section class="d-tx">
+    <header class="d-txh">
+      <div class="d-txid">${back ? `<button class="d-back" data-act="back">${ic('back')}Quadro</button>` : ''}<h1>${esc(p.name)}</h1></div>
+      <div class="d-txacts">
+        <button class="d-btn${on ? '' : ' go'}" data-act="toggle" data-id="${p.id}" ${p.pending ? 'disabled' : ''}>${ic(on ? 'stop' : 'play')}${dTogLabel(p)}</button>
+        ${canOpen(p) ? `<button class="d-btn d-ib" data-act="url" data-id="${p.id}" title="Abrir no navegador" aria-label="Abrir no navegador">${ic('ext')}</button>` : ''}
+        <button class="d-btn d-ib" data-act="edit" data-id="${p.id}" title="Editar" aria-label="Editar">${ic('edit')}</button>
+        <button class="d-btn d-ib danger" data-act="del" data-id="${p.id}" title="Apagar" aria-label="Apagar">${ic('trash')}</button>
+      </div>
+      <code class="d-path" title="${esc(p.path)}">${esc(p.path)}</code>
+    </header>
+    ${S.confirm === p.id ? `<div class="d-confirm" role="alert"><span>Apagar <b>${esc(p.name)}</b>? ${on ? 'O processo será desligado antes. ' : ''}O log também some.</span>
+      <button class="d-btn" data-act="del-no">Cancelar</button><button class="d-btn danger-fill" data-act="del-yes" data-id="${p.id}">Apagar</button></div>` : ''}
+    <div class="d-facts st-${stc(p)}">
+      <div><em>Estado</em><span class="d-st">${SHAPE[stc(p)]}${dState(p)}</span></div>
+      <div><em>${on ? 'No ar há' : p.status === 'ERRO' ? 'Saiu com' : 'Tempo no ar'}</em>${dTime(p)}</div>
+      <div><em>Comando</em><code>${esc(p.command)}</code></div>
+      <div><em>Endereço</em><code>${p.url ? esc(p.url.replace(/^https?:\/\//, '')) : '—'}</code></div>
+    </div>
+    <div class="d-logh"><h2>Log</h2><span class="mono">${LOGS[p.id].length} / 1000 linhas</span></div>
+    ${logHtml(p, 'Nada por aqui ainda. Ligue o projeto para ver a saída do processo.')}
+  </section>`;
+}
+function dForm(f){
+  const m = cmdModel(f);
+  const cmd = (f.cmd === '__custom' || !f.scripts.length) ? f.customCmd : f.cmd;
+  const fp = f.mode === 'edit' ? PROJ.find(x => x.id === f.id) : null, fk = fp ? stc(fp) : 'stop';
+  const locked = !!fp && (isOn(fp) || !!fp.pending), dis = locked ? 'disabled' : '';
+  return `<section class="d-form">
+    <header class="d-txh"><div class="d-txid">${S.size === 'p' ? `<button class="d-back" data-act="cancel">${ic('back')}Quadro</button>` : ''}<h1>${f.mode === 'add' ? 'Novo projeto' : 'Editar projeto'}</h1></div></header>
+    <div class="d-fbody" data-scroll="form">
+      <div class="d-preview" aria-hidden="true"><div class="d-strip st-${fk}"><span class="d-hold">${SHAPE[fk]}</span>
+        <span class="d-id"><b data-pv="name">${esc(f.name) || 'nome-do-projeto'}</b><code data-pv="cmd">${esc(cmd) || 'comando'}</code></span>
+        <span class="d-cell d-state"><em>${fp ? dState(fp) : "Parado"}</em>${fp ? dTime(fp) : `<span class="mono dim">—</span>`}</span></div>
+        <small>${f.mode === 'add' ? 'A faixa entra no quadro em espera.' : 'Assim a faixa aparece no quadro.'}</small></div>
+      ${locked ? `<div class="d-note">${ic('lock')}<span>Este projeto está rodando. Desligue-o para editar.</span><button class="d-btn" data-act="toggle" data-id="${fp.id}" ${fp.pending ? 'disabled' : ''}>${ic('stop')}${fp.pending ? 'Desligando…' : 'Desligar'}</button></div>` : ''}
+      ${f.error ? `<div class="d-note err" role="alert">${esc(f.error)}</div>` : ''}
+      <label class="d-f"><span>Nome</span><input data-f="name" value="${esc(f.name)}" placeholder="meu-projeto" ${dis}></label>
+      <div class="d-f"><span>Pasta</span><div class="d-inrow"><input data-f="path" value="${esc(f.path)}" placeholder="C:\\Projetos\\meu-projeto" aria-label="Pasta" ${dis}><button class="d-btn" data-act="browse" ${dis}>${ic('folder')}Procurar…</button></div></div>
+      <div class="d-f"><span>Comando</span>${m.hint ? `<p class="d-hint">${m.hint}</p>` : ''}
+        ${m.opts.length ? `<div class="d-opts" role="radiogroup" aria-label="Comando">${m.opts.map(o => `<button class="d-opt${o.on ? ' on' : ''}" role="radio" aria-checked="${o.on}" data-act="pick" data-v="${esc(o.v)}" ${dis}><i></i>${o.label ? esc(o.label) : `<code>${esc(o.v)}</code>`}</button>`).join('')}</div>` : ''}
+        ${m.showFree ? `<input data-f="customCmd" value="${esc(f.customCmd)}" placeholder="python -m http.server 8080" aria-label="Comando livre" ${dis}>` : ''}</div>
+      <label class="d-f"><span>Endereço <small>opcional</small></span><input data-f="url" value="${esc(f.url)}" placeholder="http://localhost:5173" ${dis}></label>
+    </div>
+    <footer class="d-ffoot"><button class="d-btn" data-act="cancel">Cancelar</button><button class="d-btn pri" data-act="save" ${dis}>${ic('check')}${f.mode === 'add' ? 'Adicionar ao quadro' : 'Salvar'}</button></footer>
+  </section>`;
+}
+function dMenu(){
+  const p = PROJ.find(x => x.id === S.menu);
+  if (!p || !S.menuPos) return '';
+  return `<div class="menu d-menu" style="left:${S.menuPos.x}px;top:${S.menuPos.y}px">
+    <button data-act="open" data-id="${p.id}">${ic('log')}Ver log</button>
+    <button data-act="edit" data-id="${p.id}">${ic('edit')}Editar</button>
+    <button class="danger" data-act="del" data-id="${p.id}">${ic('trash')}Apagar</button></div>`;
+}
+function dRender(){
+  const s = screenNow(), ps = projects(), small = S.size === 'p';
+  if (ps.length && !sel()) S.sel = ps[0].id;
+  const p = sel();
+  let body, solo = small;
+  if (small) body = s === 'form' ? dForm(S.form) : (s === 'detail' && p) ? dTx(p, true) : dBoard();
+  else if (!ps.length && s !== 'form') { body = dBoard(); solo = true; }
+  else body = dBoard() + (s === 'form' ? dForm(S.form) : dTx(p, false));
+  return `<div class="d-root">${dTop()}<div class="d-body${solo ? ' solo' : ''}">${body}</div>${dMenu()}</div>`;
+}
+
 // ---------------- registro das variações ----------------
 const V = {
   A: { name:'Arquivo de Caso', tag:'noir · The Batman (2022) · Territory Studio', render(){ const s = screenNow(); return s === 'detail' ? aDetail(sel()) : s === 'form' ? aForm(S.form) : aList(); } },
   B: { name:'Holograma', tag:'ciano · BvS (Perception) / Arkham', render(){ const s = screenNow(); return s === 'detail' ? bDetail(sel()) : s === 'form' ? bForm(S.form) : bList(); } },
   C: { name:'Console de Sonar', tag:'híbrido · noir + ciano', render: cRender },
+  D: { name:'Quadro de Faixas', tag:'escolhida · faixas de controle de voo', render: dRender },
 };
 const KEYS = Object.keys(V);
 
@@ -776,6 +1062,8 @@ const app = document.getElementById('app'), win = document.getElementById('win')
 function render(){
   const saved = {};
   app.querySelectorAll('[data-scroll]').forEach(el => saved[el.dataset.scroll] = { top: el.scrollTop, bottom: el.scrollHeight - el.scrollTop - el.clientHeight < 40 });
+  const before = {};
+  if (S.variant === 'D') app.querySelectorAll('[data-flip]').forEach(el => before[el.dataset.flip] = el.getBoundingClientRect());
   app.className = `app v${S.variant} size-${S.size}${S.fx ? ' fx' : ''}`;
   app.innerHTML = V[S.variant].render() + overlays();
   app.querySelectorAll('[data-scroll]').forEach(el => {
@@ -783,6 +1071,16 @@ function render(){
     if (el.classList.contains('log')) el.scrollTop = (!sv || sv.bottom) ? el.scrollHeight : sv.top;
     else if (sv) el.scrollTop = sv.top;
   });
+  // D: a faixa desliza da baia antiga para a nova (FLIP)
+  if (S.variant === 'D' && S.fx && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    app.querySelectorAll('[data-flip]').forEach(el => {
+      const b = before[el.dataset.flip]; if (!b) return;
+      const a = el.getBoundingClientRect(), dx = b.left - a.left, dy = b.top - a.top;
+      if (Math.abs(dy) < 2 && Math.abs(dx) < 2) return;
+      el.animate([{ transform:`translate(${dx}px,${dy}px)` }, { transform:'none' }], { duration:300, easing:'cubic-bezier(.16,1,.3,1)' });
+      el.querySelector('.d-hold')?.animate([{ filter:'brightness(1.7)' }, { filter:'none' }], { duration:600, delay:200, easing:'ease-out' });
+    });
+  }
   win.classList.toggle('p', S.size === 'p');
   tick(true);
   renderBar();
@@ -829,7 +1127,7 @@ function start(p){
       ['> api-financas@1.0.0 start','> node src/server.js'].forEach(x => push(p, x));
       ["Error: Cannot find module 'dotenv'",'Require stack:','- C:\\Projetos\\api-financas\\src\\server.js',"  code: 'MODULE_NOT_FOUND',"].forEach(x => push(p, x, 'err'));
       push(p, '[processo encerrado com código 1]', 'sys');
-      p.status = 'ERRO'; p.exitCode = 1;
+      p.status = 'ERRO'; p.exitCode = 1; p.cocked = true;
     } else {
       (START[p.id] || [`> ${p.command}`, 'pronto.']).forEach(x => push(p, x));
       p.status = 'RODANDO'; p.since = Date.now(); p.exitCode = null;
@@ -857,12 +1155,17 @@ app.addEventListener('click', e => {
   if (!el) { if (S.menu) { S.menu = null; render(); } return; }
   const id = el.dataset.id, p = PROJ.find(x => x.id === id), f = S.form;
   switch (el.dataset.act) {
-    case 'open': S.sel = id; go('detail'); break;
+    case 'open': S.sel = id; if (p) p.cocked = false; go('detail'); break;
     case 'toggle': if (!p.pending) (isOn(p) ? stop : start)(p); break;
     case 'url': toast(`Abriria ${p.url} no navegador padrão`); break;
-    case 'menu': S.menu = S.menu === id ? null : id; render(); break;
+    case 'menu': {
+      S.menu = S.menu === id ? null : id;
+      const r = el.getBoundingClientRect(), a = app.getBoundingClientRect();
+      S.menuPos = { x: Math.max(8, r.right - a.left - 150), y: r.bottom - a.top + 124 > a.height ? r.top - a.top - 116 : r.bottom - a.top + 4 };
+      render(); break;
+    }
     case 'edit': S.sel = id; S.menu = null; S.form = newForm('edit', p); S.screen = 'form'; render(); break;
-    case 'del': S.menu = null; S.confirm = id; render(); break;
+    case 'del': S.menu = null; S.confirm = id; if (S.variant === 'D') { S.sel = id; if (S.size === 'p') S.screen = 'detail'; } render(); break;
     case 'del-no': S.confirm = null; render(); break;
     case 'del-yes': {
       PROJ.splice(PROJ.indexOf(p), 1); S.confirm = null;
@@ -878,7 +1181,12 @@ app.addEventListener('click', e => {
     case 'save': save(); break;
   }
 });
-app.addEventListener('input', e => { const k = e.target.dataset.f; if (k && S.form) S.form[k] = e.target.value; });
+app.addEventListener('input', e => {
+  const k = e.target.dataset.f; if (!k || !S.form) return;
+  S.form[k] = e.target.value;
+  const pv = app.querySelector(`[data-pv="${k === 'customCmd' ? 'cmd' : k}"]`);
+  if (pv) pv.textContent = e.target.value || (k === 'name' ? 'nome-do-projeto' : 'comando');
+});
 app.addEventListener('change', e => {
   if (e.target.dataset.f !== 'path' || !S.form) return;
   const f = S.form; f.scripts = f.path && !/oee|python/i.test(f.path) ? ['dev','build','start'] : [];
@@ -909,13 +1217,14 @@ bar.addEventListener('click', e => {
 document.addEventListener('keydown', e => {
   const t = e.target;
   if (t.matches('input,textarea,[contenteditable]')) { if (e.key === 'Escape' && S.screen === 'form') go(S.form?.mode === 'edit' ? 'detail' : 'list'); if (e.key === 'Enter' && e.ctrlKey && S.form) save(); return; }
+  if ((e.key === 'Enter' || e.key === ' ') && t.matches('[role=button][data-act]')) { e.preventDefault(); t.click(); return; }
   const i = KEYS.indexOf(S.variant);
   if (e.key === 'ArrowLeft') setVariant(KEYS[(i + KEYS.length - 1) % KEYS.length]);
   else if (e.key === 'ArrowRight') setVariant(KEYS[(i + 1) % KEYS.length]);
   else if (e.key === 'Escape') { if (S.confirm) { S.confirm = null; render(); } else if (S.screen === 'form') go(S.form?.mode === 'edit' ? 'detail' : 'list'); }
-  else if (S.variant === 'C' && S.screen !== 'form' && !S.confirm) {
-    const ps = projects(), j = ps.findIndex(p => p.id === S.sel);
-    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); const k = ps[(j + (e.key === 'ArrowDown' ? 1 : ps.length - 1)) % ps.length]; if (k) { S.sel = k.id; render(); } }
+  else if ((S.variant === 'C' || S.variant === 'D') && S.screen !== 'form' && !S.confirm) {
+    const ps = S.variant === 'D' ? DBAYS.flatMap(([, , , f]) => projects().filter(f)) : projects(), j = ps.findIndex(p => p.id === S.sel);
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); const k = ps[(j + (e.key === 'ArrowDown' ? 1 : ps.length - 1)) % ps.length]; if (k) { S.sel = k.id; k.cocked = false; render(); app.querySelector(`[data-flip="${k.id}"]`)?.focus(); } }
     else if (e.key.toLowerCase() === 's' && sel() && !sel().pending) (isOn(sel()) ? stop : start)(sel());
     else if (e.key.toLowerCase() === 'n') { S.form = newForm('add'); S.screen = 'form'; render(); }
   }
