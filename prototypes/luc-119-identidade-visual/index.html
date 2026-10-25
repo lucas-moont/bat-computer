@@ -1,0 +1,928 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PROTÓTIPO · Bat-Computer · identidade visual (LUC-119)</title>
+<!--
+  PROTÓTIPO DESCARTÁVEL (LUC-119). Não é código de produção.
+  Pergunta: qual identidade visual o Bat-Computer segue?
+  Três variações das três telas (lista, detalhes com logs, formulário), trocadas por
+  ?variant=A|B|C, com ?screen=list|detail|form, ?fx=1|0 (imersivo/contido) e ?size=m|p
+  (janela média/pequena). Dados de mentira, tudo em memória. Abra com duplo clique.
+  Vive só no galho prototype/luc-119-identidade-visual; o main guarda só a decisão.
+  Referências: docs/research/2026-10-24-referencias-visuais-batcomputador.md (direções 1 e 2; C é híbrido das duas).
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Special+Elite&family=Courier+Prime:wght@400;700&family=Chakra+Petch:wght@400;500;600;700&family=Share+Tech+Mono&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ---------- moldura do protótipo (neutra, não faz parte do design) ---------- */
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:#2b2b2f;background-image:radial-gradient(#3a3a40 1px,transparent 1px);background-size:18px 18px;
+  display:grid;place-items:center;padding:24px 16px 96px;font-family:system-ui,sans-serif;overflow:auto}
+.win{width:880px;height:580px;max-width:calc(100vw - 32px);max-height:calc(100vh - 140px);display:flex;flex-direction:column;
+  border:1px solid #000;box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.06);transition:width .25s,height .25s}
+.win.p{width:480px;height:640px}
+.titlebar{height:30px;flex:none;background:#1f1f1f;color:#ddd;font:12px "Segoe UI",system-ui,sans-serif;
+  display:flex;align-items:center;padding-left:12px;user-select:none}
+.titlebar .t{flex:1;opacity:.85}
+.titlebar span.w{width:46px;height:30px;display:grid;place-items:center;opacity:.7}
+.app{flex:1;min-height:0;position:relative;overflow:hidden}
+.app button{cursor:pointer;font:inherit;color:inherit}
+.app button:disabled{cursor:default;opacity:.45}
+.app input{font:inherit;color:inherit;min-width:0}
+.app .log{overflow:auto;min-height:0}
+.app .ln{display:grid;white-space:pre-wrap;word-break:break-all}
+.app .menu{position:absolute;right:0;top:calc(100% + 4px);z-index:20;display:flex;flex-direction:column;min-width:130px}
+.app .a-row:nth-last-child(-n+2) .menu,.app .b-mod:nth-last-child(-n+2) .menu{top:auto;bottom:calc(100% + 4px)}
+.app .menu button{text-align:left;background:none;border:0}
+.app .ov{position:absolute;inset:0;z-index:50;display:grid;place-items:center}
+.app .toast{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:60;pointer-events:none;white-space:nowrap;animation:toast 2.6s forwards}
+@keyframes toast{0%{opacity:0;transform:translate(-50%,8px)}10%,80%{opacity:1;transform:translate(-50%,0)}100%{opacity:0}}
+
+@media (prefers-reduced-motion:reduce){.app *,.app::before,.app::after{animation:none!important}}
+
+/* barra flutuante do protótipo */
+#bar{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:999;display:flex;align-items:center;gap:6px;
+  background:#fafafa;color:#111;border-radius:999px;padding:6px 8px;font:13px system-ui,sans-serif;
+  box-shadow:0 8px 30px rgba(0,0,0,.45);white-space:nowrap;max-width:calc(100vw - 16px);overflow-x:auto}
+#bar button{border:0;background:#ececec;border-radius:999px;padding:6px 11px;font:inherit;cursor:pointer;color:#111}
+#bar button:hover{background:#dcdcdc}
+#bar button.on{background:#111;color:#fff}
+#bar .arrow{width:32px;padding:6px 0;font-size:16px;line-height:1}
+#bar .lbl{min-width:240px;text-align:center}
+#bar .lbl b{display:inline-block;background:#111;color:#fff;border-radius:6px;padding:0 6px;margin-right:6px}
+#bar .lbl small{display:block;color:#666;font-size:11px}
+#bar .sep{width:1px;height:22px;background:#ccc;margin:0 4px}
+#bar .seg{display:flex;gap:2px}
+
+/* ======================================================================
+   A · ARQUIVO DE CASO (noir, The Batman 2022)
+   ====================================================================== */
+.vA{--bg:#0e0d0c;--bg2:#171513;--ink:#e6dfd3;--mute:#8c8378;--line:#2e2a26;--red:#c8322b;--err:#e5483d;--amber:#d9a441;--stop:#8a8178;
+  background:radial-gradient(120% 70% at 50% -10%,rgba(200,55,45,.10),transparent 60%),var(--bg);
+  color:var(--ink);font:13px/1.4 "IBM Plex Mono",monospace}
+.vA .a-root{height:100%;display:flex;flex-direction:column;padding:16px 22px 12px;position:relative}
+.vA .log{position:relative;z-index:6}
+.vA .a-proj{font-family:"Courier Prime",monospace}
+.vA .a-proj b{font-size:15px}
+.vA .a-head{display:grid;grid-template-columns:1fr auto;align-items:end;gap:2px 12px;border-bottom:2px solid var(--red);padding-bottom:10px}
+.vA .a-kicker{font:11px "Special Elite",monospace;letter-spacing:.14em;color:var(--mute)}
+.vA .a-head .a-kicker{grid-column:1/-1}
+.vA .a-title{font:800 40px/.9 "Big Shoulders Display",sans-serif;letter-spacing:.05em;margin:0;text-transform:uppercase}
+.vA .a-title i{font-style:normal;color:var(--red)}
+.vA .a-add,.vA .a-primary{font:13px "Special Elite",monospace;letter-spacing:.1em;background:none;border:1px solid var(--ink);padding:7px 12px}
+.vA .a-add:hover,.vA .a-primary:hover:not(:disabled){background:var(--red);border-color:var(--red)}
+.vA .a-primary{background:var(--ink);color:var(--bg)!important}
+.vA .a-ledger{flex:1;min-height:0;overflow:auto;margin-top:4px}
+.vA .a-row{display:grid;grid-template-columns:34px 1fr 112px 200px;align-items:center;gap:10px;min-height:48px;padding:0 6px;
+  border-bottom:1px solid var(--line);cursor:pointer;position:relative}
+.vA .a-row:not(.a-hrow):hover{background:linear-gradient(90deg,rgba(200,55,45,.10),transparent 70%)}
+.vA .a-hrow{min-height:30px;cursor:default;font:10.5px "Special Elite",monospace;letter-spacing:.14em;color:var(--mute);position:sticky;top:0;background:var(--bg);z-index:2}
+.vA .a-num{color:var(--mute);font-size:11px}
+.vA .a-proj{min-width:0}
+.vA .a-proj b{display:block;font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vA .a-proj i{display:block;font-style:normal;color:var(--mute);font-size:11.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vA .a-stamp{display:inline-block;font:13px/1 "Special Elite",monospace;letter-spacing:.1em;border:1.5px solid currentColor;padding:4px 7px 3px;border-radius:2px;transform:rotate(-2deg)}
+.vA .a-stamp.s-stop{color:var(--stop)}
+.vA .a-stamp.s-run{color:var(--amber)}
+.vA .a-stamp.s-err{color:var(--err);transform:rotate(1.5deg)}
+.vA .a-stamp.s-busy{color:var(--mute);border-style:dashed}
+.vA .a-stamp.big{font-size:20px;padding:7px 12px 5px;border-width:2.5px;transform:rotate(-5deg)}
+.vA .a-stamp.big.s-err{transform:rotate(4deg)}
+.vA.fx .a-stamp{filter:url(#rough)}
+.vA .a-acts{display:flex;align-items:center;justify-content:flex-end;gap:6px;position:relative}
+.vA .a-btn{background:none;border:1px solid #3a302a;font:600 11px "IBM Plex Mono",monospace;letter-spacing:.1em;padding:6px 10px}
+.vA .a-btn:hover:not(:disabled){border-color:var(--ink)}
+.vA .a-btn.on{border-color:var(--amber);color:var(--amber)}
+.vA .a-dots{background:none;border:0;font-size:18px;padding:0 4px;color:var(--mute)}
+.vA .a-link{background:none;border:0;border-bottom:1px solid currentColor;padding:1px 0;font-size:11.5px;color:var(--amber)}
+.vA .a-foot{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:8px;margin-top:8px;font:11px "Special Elite",monospace;letter-spacing:.08em;color:var(--mute)}
+.vA .a-empty{flex:1;display:grid;place-content:center;text-align:center;gap:10px}
+.vA .a-empty h2{font:800 30px "Big Shoulders Display";letter-spacing:.06em;margin:0}
+.vA .a-empty p{margin:0 0 6px;color:var(--mute);font-family:"Special Elite"}
+.vA .menu{background:var(--bg2);border:1px solid #3a302a;padding:4px;box-shadow:0 12px 30px rgba(0,0,0,.6)}
+.vA .menu button{padding:7px 10px;font:12px "Special Elite"}
+.vA .menu button:hover{background:#221b17}
+.vA .menu .danger{color:var(--red)}
+.vA .a-topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.vA .a-back{background:none;border:0;padding:0;font:12px "Special Elite";letter-spacing:.1em;color:var(--mute)}
+.vA .a-back:hover{color:var(--ink)}
+.vA .a-dossier{border-bottom:2px solid var(--red);padding-bottom:12px}
+.vA .a-dhead{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.vA .a-name{font-size:34px;text-transform:none;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis}
+.vA .a-meta{display:grid;grid-template-columns:150px 1fr;gap:3px 12px;margin:10px 0 12px}
+.vA .a-meta dt{font:11px "Special Elite";letter-spacing:.12em;color:var(--mute);border-bottom:1px dotted #3a302a}
+.vA .a-meta dd{margin:0;font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vA .a-dacts{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.vA .a-dacts .sp{flex:1}
+.vA .a-trans{flex:1;min-height:0;display:flex;flex-direction:column;padding-top:10px}
+.vA .a-trans-h{display:flex;justify-content:space-between;font:11px "Special Elite";letter-spacing:.14em;color:var(--mute);margin-bottom:6px}
+.vA .log{flex:1;font:12px/1.6 "IBM Plex Mono",monospace;background:rgba(0,0,0,.25);border:1px solid var(--line);padding:6px 0}
+.vA .ln{grid-template-columns:42px 1fr;padding-right:10px}
+.vA .ln .n{color:#5a3a33;text-align:right;padding-right:10px;user-select:none}
+.vA .ln .t{display:none}
+.vA .ln.err{color:#ec7a70;background:rgba(200,55,45,.08)}
+.vA .ln.err .n{color:var(--red)}
+.vA .ln.sys{color:var(--mute);font-style:italic}
+.vA .log-empty{padding:30px 16px;text-align:center;color:var(--mute);font-family:"Special Elite"}
+.vA .a-form{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:16px;padding:14px 2px}
+.vA .a-f{display:flex;flex-direction:column;gap:4px}
+.vA .a-f>span{font:11px "Special Elite";letter-spacing:.14em;color:var(--mute)}
+.vA .a-f>span em{font-style:normal;opacity:.7}
+.vA .a-f input{background:none;border:0;border-bottom:1px dashed #5b4f45;padding:5px 0;font-size:14px;outline:none}
+.vA .a-f input:focus{border-bottom:1px solid var(--red)}
+.vA .a-inrow{display:flex;gap:10px;align-items:end}
+.vA .a-inrow input{flex:1}
+.vA .a-radio{display:flex;align-items:center;gap:10px;background:none;border:0;padding:3px 0;font-size:13.5px;text-align:left}
+.vA .a-radio::before{content:"( )";color:var(--mute);white-space:pre}
+.vA .a-radio.on::before{content:"(●)";color:var(--red)}
+.vA .a-hint{color:var(--mute);font-family:"Special Elite";font-size:12px}
+.vA .a-warn{border-left:3px solid var(--amber);padding:6px 10px;margin-top:10px;font-family:"Special Elite";font-size:12.5px;color:var(--amber);background:rgba(221,154,59,.07)}
+.vA .a-warn.err{border-color:var(--red);color:#ec7a70;background:rgba(200,55,45,.08)}
+.vA .a-formacts{display:flex;gap:16px;align-items:center;border-top:1px solid var(--line);padding-top:10px}
+.vA .ov{background:rgba(5,4,3,.75)}
+.vA .dlg{background:var(--bg2);border:1px solid #3a302a;border-top:3px solid var(--red);padding:18px 20px;width:min(360px,86%)}
+.vA .dlg h3{margin:0 0 6px;font:800 24px "Big Shoulders Display";letter-spacing:.04em;text-transform:uppercase}
+.vA .dlg p{margin:0 0 16px;color:var(--mute);font-family:"Special Elite"}
+.vA .dlg .acts{display:flex;gap:10px;justify-content:flex-end}
+.vA .dlg .yes{background:var(--red);border:0;padding:7px 12px;font:13px "Special Elite"}
+.vA .dlg .no{background:none;border:1px solid #3a302a;padding:7px 12px;font:13px "Special Elite"}
+.vA .toast{background:var(--ink);color:var(--bg);font:12px "Special Elite";padding:7px 12px}
+.vA.size-p .a-row{grid-template-columns:1fr auto;grid-template-areas:"p s" "p a";padding:8px 4px;gap:6px 10px}
+.vA.size-p .a-row .a-num{display:none}
+.vA.size-p .a-hrow{display:none}
+.vA.size-p .a-proj{grid-area:p}
+.vA.size-p .a-row>span:nth-child(3){grid-area:s}
+.vA.size-p .a-acts{grid-area:a;justify-content:flex-end}
+.vA.size-p .a-title{font-size:32px}
+.vA.size-p .a-name{font-size:26px}
+.vA.size-p .a-meta{grid-template-columns:118px 1fr}
+.vA.size-p .a-stamp.big{font-size:15px}
+/* imersivo: grão de filme, chuva e luz de sódio */
+.vA.fx::before{content:"";position:absolute;inset:-50%;z-index:5;pointer-events:none;opacity:.10;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation:grain .9s steps(6) infinite}
+.vA.fx::after{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;
+  background:repeating-linear-gradient(104deg,transparent 0 46px,rgba(228,220,205,.045) 46px 47px,transparent 47px 91px),
+    radial-gradient(130% 100% at 50% 40%,transparent 55%,rgba(0,0,0,.55));
+  background-size:200px 300px,100% 100%;animation:rain .55s linear infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-4%,3%)}40%{transform:translate(3%,-5%)}60%{transform:translate(-6%,2%)}80%{transform:translate(5%,4%)}}
+@keyframes rain{to{background-position:-60px 300px,0 0}}
+.vA.fx .a-stamp.s-err{animation:neon 4s infinite}
+@keyframes neon{0%,93%,100%{opacity:1}94%{opacity:.35}96%{opacity:1}97%{opacity:.5}}
+
+/* ======================================================================
+   B · HOLOGRAMA (ciano, BvS / Arkham)
+   ====================================================================== */
+.vB{--bg:#05090d;--panel:rgba(16,58,72,.26);--line:rgba(63,216,255,.22);--cyan:#3fd8ff;--ice:#d2f1ff;--mute:#6f8c9e;--amber:#f2b33d;--red:#ff5c4d;--stop:#6a8698;
+  --ch:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));
+  background:radial-gradient(90% 60% at 50% -15%,rgba(63,216,255,.16),transparent 65%),var(--bg);
+  color:var(--ice);font:13px/1.45 "Share Tech Mono",monospace}
+.vB.fx{background:radial-gradient(90% 60% at 50% -15%,rgba(63,216,255,.2),transparent 65%),
+  linear-gradient(rgba(63,216,255,.04) 1px,transparent 1px) 0 0/100% 24px,
+  linear-gradient(90deg,rgba(63,216,255,.04) 1px,transparent 1px) 0 0/24px 100%,var(--bg)}
+.vB .b-root{height:100%;display:flex;flex-direction:column;padding:14px 16px;gap:10px;position:relative;z-index:1}
+.vB .b-hud{display:flex;align-items:stretch;justify-content:space-between;border:1px solid var(--line);clip-path:var(--ch);background:var(--panel);padding:8px 12px}
+.vB .b-logo{display:flex;align-items:center;gap:10px;font:700 18px "Chakra Petch",sans-serif;letter-spacing:.28em;color:var(--cyan)}
+.vB .b-logo small{display:block;font:10px "Share Tech Mono";letter-spacing:.16em;color:var(--mute)}
+.vB .b-gem{width:22px;height:22px;border:1.5px solid var(--cyan);transform:rotate(45deg);position:relative;flex:none}
+.vB .b-gem::after{content:"";position:absolute;inset:5px;background:var(--cyan)}
+.vB .b-tele{display:flex}
+.vB .b-tele div{border-left:1px solid var(--line);padding:0 12px;display:flex;flex-direction:column;justify-content:center}
+.vB .b-tele em{font-style:normal;font-size:9.5px;letter-spacing:.2em;color:var(--mute)}
+.vB .b-tele b{font:600 17px "Chakra Petch";color:var(--ice)}
+.vB .b-tele b.err{color:var(--red)}
+.vB .b-tele b.run{color:var(--cyan)}
+.vB .b-bar{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.vB .b-cap{font-size:11px;letter-spacing:.2em;color:var(--mute)}
+.vB .b-cap b{color:var(--cyan);font-weight:400}
+.vB .b-btn{font:600 11px "Chakra Petch";letter-spacing:.16em;text-transform:uppercase;color:var(--cyan)!important;background:rgba(63,216,255,.07);
+  border:1px solid var(--cyan);padding:6px 12px;clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px))}
+.vB .b-btn:hover:not(:disabled){background:var(--cyan);color:var(--bg)!important}
+.vB .b-btn.warn{color:var(--amber)!important;border-color:var(--amber);background:rgba(255,179,71,.07)}
+.vB .b-btn.warn:hover:not(:disabled){background:var(--amber);color:var(--bg)!important}
+.vB .b-btn.ghost{border-color:var(--line);color:var(--ice)!important;background:none}
+.vB .b-btn.sq{padding:6px 9px}
+.vB .b-grid{flex:1;min-height:0;overflow:auto;display:grid;grid-template-columns:1fr 1fr;gap:10px;align-content:start;padding-right:2px}
+.vB .b-mod{position:relative;background:var(--panel);border:1px solid var(--line);clip-path:var(--ch);padding:10px 12px 10px 15px;cursor:pointer;
+  display:flex;flex-direction:column;gap:5px;box-shadow:inset 3px 0 0 var(--k,var(--stop))}
+.vB .b-mod:hover{background:rgba(26,84,102,.32)}
+.vB .b-mod.st-run{--k:var(--cyan);border-color:rgba(63,216,255,.45)}
+.vB .b-mod.st-err{--k:var(--red);border-color:rgba(255,77,94,.45)}
+.vB .b-mod.st-busy{--k:var(--amber)}
+.vB .b-mtop{display:flex;align-items:center;gap:8px;font-size:10.5px;letter-spacing:.2em}
+.vB .b-st{color:var(--k,var(--stop))}
+.vB .b-up{margin-left:auto;color:var(--mute);letter-spacing:.08em}
+.vB .b-led{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--k,var(--stop))}
+.vB .st-run .b-led,.vB .st-err .b-led,.vB .st-busy .b-led{background:var(--k);box-shadow:0 0 8px var(--k)}
+.vB .st-run .b-led{border-radius:0;transform:rotate(45deg);animation:bpulse 2.4s ease-in-out infinite}
+.vB .st-err .b-led{border:0;border-radius:0;width:10px;height:9px;clip-path:polygon(50% 0,100% 100%,0 100%)}
+@keyframes bpulse{50%{box-shadow:0 0 2px var(--k)}}
+.vB .b-mod h3{margin:0;font:600 17px "Chakra Petch";letter-spacing:.03em}
+.vB .b-mod code{font:12px "JetBrains Mono";color:var(--mute)}
+.vB .b-spark{display:flex;align-items:flex-end;gap:2px;height:20px}
+.vB .b-spark i{flex:1;background:var(--cyan);opacity:.55;height:calc(var(--h)*1%);transform-origin:bottom;animation:spark 1.6s ease-in-out infinite alternate;animation-delay:var(--d)}
+@keyframes spark{to{transform:scaleY(.35)}}
+.vB .b-flat{height:20px;background:linear-gradient(var(--line),var(--line)) 0 50%/100% 1px no-repeat}
+.vB .b-fault{height:20px;font-size:11.5px;color:var(--red);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;line-height:20px}
+.vB .b-load{height:20px;background:linear-gradient(90deg,transparent,var(--amber),transparent) 0 50%/40% 2px no-repeat;animation:load 1s linear infinite}
+@keyframes load{from{background-position:-40% 50%}to{background-position:140% 50%}}
+.vB .b-macts{display:flex;gap:6px;align-items:center;position:relative;margin-top:2px}
+.vB .menu{background:#06141a;border:1px solid var(--cyan);padding:4px;box-shadow:0 0 24px rgba(63,216,255,.2)}
+.vB .menu button{padding:7px 10px;font:12px "Share Tech Mono";letter-spacing:.12em;text-transform:uppercase}
+.vB .menu button:hover{background:rgba(63,216,255,.12)}
+.vB .menu .danger{color:var(--red)}
+.vB .b-mod:has(.menu){clip-path:none}
+.vB .b-empty{flex:1;display:grid;place-content:center;justify-items:center;text-align:center;gap:10px;border:1px dashed var(--line)}
+.vB .b-empty h2{margin:0;font:600 20px "Chakra Petch";letter-spacing:.24em;color:var(--cyan)}
+.vB .b-empty p{margin:0 0 6px;color:var(--mute)}
+.vB .b-detail{flex:1;min-height:0;display:grid;grid-template-columns:230px 1fr;gap:10px}
+.vB .b-core{border:1px solid var(--line);background:var(--panel);clip-path:var(--ch);padding:14px;display:flex;flex-direction:column;gap:12px;overflow:auto;--k:var(--stop)}
+.vB .b-core.st-run{--k:var(--cyan)}.vB .b-core.st-err{--k:var(--red)}.vB .b-core.st-busy{--k:var(--amber)}
+.vB .b-core h2{margin:0;font:600 20px "Chakra Petch";word-break:break-all}
+.vB .b-ring{position:relative;width:150px;height:150px;align-self:center}
+.vB .b-ring svg{width:100%;height:100%;overflow:visible}
+.vB .b-ring circle{fill:none}
+.vB .b-ring .r0{stroke:var(--line);stroke-width:1}
+.vB .b-ring .r1{stroke:var(--k);stroke-width:3;stroke-dasharray:60 18 6 18;transform-origin:60px 60px;filter:drop-shadow(0 0 4px var(--k))}
+.vB .b-core.st-run .r1{animation:spin 6s linear infinite}
+.vB .b-core.st-busy .r1{animation:spin 1s linear infinite}
+.vB .b-ring .r2{stroke:var(--k);stroke-width:6;stroke-dasharray:1 5;opacity:.5}
+@keyframes spin{to{transform:rotate(360deg)}}
+.vB .b-ringc{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.vB .b-ringc b{font:600 16px "Chakra Petch";letter-spacing:.18em;color:var(--k)}
+.vB .b-ringc small{color:var(--mute);font-size:11px;letter-spacing:.1em}
+.vB .b-dl{margin:0;display:flex;flex-direction:column;gap:6px}
+.vB .b-dl dt{font-size:9.5px;letter-spacing:.22em;color:var(--mute)}
+.vB .b-dl dd{margin:0;font-size:12px;word-break:break-all}
+.vB .b-cacts{display:flex;flex-wrap:wrap;gap:6px}
+.vB .b-stream{border:1px solid var(--line);background:rgba(0,0,0,.35);display:flex;flex-direction:column;min-height:0;clip-path:var(--ch)}
+.vB .b-streamh{display:flex;justify-content:space-between;padding:7px 12px;border-bottom:1px solid var(--line);font-size:10.5px;letter-spacing:.18em;color:var(--mute)}
+.vB .log{flex:1;padding:6px 0;font:12px/1.55 "JetBrains Mono",monospace}
+.vB .ln{grid-template-columns:74px 1fr;padding:0 12px}
+.vB .ln .n{display:none}
+.vB .ln .t{color:var(--mute)}
+.vB .ln .x{color:#bfeefb}
+.vB .ln.err .x{color:var(--red)}
+.vB .ln.err .t::after{content:" ▲";color:var(--red)}
+.vB .ln.sys .x{color:var(--amber)}
+.vB .log::after{content:"█";display:block;padding:0 12px 0 86px;color:var(--cyan);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.vB .log-empty{padding:30px;color:var(--mute);text-align:center;letter-spacing:.1em}
+.vB .b-form{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:10px}
+.vB .b-sec{display:grid;grid-template-columns:36px 1fr;gap:10px;border:1px solid var(--line);background:var(--panel);padding:10px 12px;clip-path:var(--ch)}
+.vB .b-sec .k{font:700 13px "Chakra Petch";color:var(--bg);background:var(--cyan);height:24px;display:grid;place-items:center;clip-path:polygon(0 0,100% 0,100% 70%,70% 100%,0 100%)}
+.vB .b-sec label,.vB .b-sec .lab{display:block;font-size:10px;letter-spacing:.22em;color:var(--mute);margin-bottom:5px}
+.vB .b-sec input{width:100%;background:rgba(63,216,255,.04);border:1px solid var(--line);padding:7px 9px;font-size:13px;outline:none}
+.vB .b-sec input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(63,216,255,.12)}
+.vB .b-sec input:disabled{opacity:.5}
+.vB .b-inrow{display:flex;gap:6px}
+.vB .b-chips{display:flex;flex-wrap:wrap;gap:6px}
+.vB .b-chip{font:12px "Share Tech Mono";border:1px solid var(--line);background:none;padding:6px 10px;color:var(--ice)}
+.vB .b-chip.on{border-color:var(--cyan);color:var(--cyan);background:rgba(63,216,255,.1);box-shadow:inset 0 0 12px rgba(63,216,255,.15)}
+.vB .b-hint{color:var(--mute);font-size:12px;margin:4px 0}
+.vB .b-warn{border:1px solid var(--amber);color:var(--amber);padding:7px 12px;font-size:12px;letter-spacing:.06em;background:rgba(255,179,71,.06)}
+.vB .b-warn.err{border-color:var(--red);color:var(--red);background:rgba(255,77,94,.06)}
+.vB .b-formacts{display:flex;justify-content:flex-end;gap:8px}
+.vB .ov{background:rgba(1,6,9,.78);backdrop-filter:blur(2px)}
+.vB .dlg{border:1px solid var(--red);background:#0b0c10;padding:18px 20px;width:min(360px,86%);clip-path:var(--ch);box-shadow:inset 0 0 40px rgba(255,77,94,.12)}
+.vB .dlg h3{margin:0 0 6px;font:600 16px "Chakra Petch";letter-spacing:.2em;color:var(--red)}
+.vB .dlg p{margin:0 0 16px;color:var(--mute)}
+.vB .dlg .acts{display:flex;gap:8px;justify-content:flex-end}
+.vB .dlg button{font:600 11px "Chakra Petch";letter-spacing:.16em;padding:7px 12px;border:1px solid var(--line);background:none}
+.vB .dlg .yes{border-color:var(--red);color:var(--red)}
+.vB .dlg .yes:hover{background:var(--red);color:#000}
+.vB .toast{border:1px solid var(--cyan);background:#04161d;color:var(--cyan);font-size:12px;letter-spacing:.12em;padding:7px 14px;box-shadow:0 0 20px rgba(63,216,255,.25)}
+.vB.size-p .b-grid{grid-template-columns:1fr}
+.vB.size-p .b-detail{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+.vB.size-p .b-core{flex-direction:row;flex-wrap:wrap;align-items:center;max-height:230px}
+.vB.size-p .b-ring{width:96px;height:96px}
+.vB.size-p .b-ringc b{font-size:11px}
+.vB.size-p .b-core .b-dl{flex:1;min-width:200px}
+.vB.size-p .b-tele div:nth-child(3){display:none}
+.vB.size-p .b-logo{font-size:15px;letter-spacing:.2em}
+/* imersivo: scanlines, brilho, tremulação, boot */
+.vB.fx::after{content:"";position:absolute;inset:0;z-index:30;pointer-events:none;
+  background:repeating-linear-gradient(transparent 0 2px,rgba(0,0,0,.28) 2px 3px);mix-blend-mode:multiply}
+.vB.fx::before{content:"";position:absolute;left:0;right:0;height:120px;z-index:31;pointer-events:none;
+  background:linear-gradient(transparent,rgba(63,216,255,.06),transparent);animation:sweep 5s linear infinite}
+@keyframes sweep{from{top:-120px}to{top:100%}}
+.vB.fx .b-logo,.vB.fx .b-st,.vB.fx .b-tele b,.vB.fx .b-ringc b,.vB.fx .b-cap b{text-shadow:0 0 10px currentColor}
+.vB.fx .b-mod.st-run{box-shadow:inset 3px 0 0 var(--k),inset 0 0 28px rgba(63,216,255,.10)}
+.vB.fx .b-mod.st-err{box-shadow:inset 3px 0 0 var(--k),inset 0 0 28px rgba(255,77,94,.12)}
+.vB.fx .b-root{animation:flicker 7s infinite}
+@keyframes flicker{0%,96%,100%{opacity:1}96.5%{opacity:.82}97%{opacity:1}98%{opacity:.9}}
+.vB .boot{position:absolute;inset:0;z-index:80;background:var(--bg);display:flex;flex-direction:column;justify-content:center;padding:0 12%;gap:4px;
+  font-size:13px;letter-spacing:.12em;color:var(--cyan);animation:bootout .3s 1.5s forwards}
+.vB .boot div{opacity:0;animation:bootln .01s forwards}
+.vB .boot div:nth-child(1){animation-delay:.1s}.vB .boot div:nth-child(2){animation-delay:.35s}.vB .boot div:nth-child(3){animation-delay:.6s}
+.vB .boot div:nth-child(4){animation-delay:.85s}.vB .boot div:nth-child(5){animation-delay:1.1s}
+.vB .boot span{color:var(--ice)}
+@keyframes bootln{to{opacity:1}}
+@keyframes bootout{to{opacity:0;visibility:hidden}}
+
+/* ======================================================================
+   C · CONSOLE DE SONAR (híbrido: escuro noir + ciano só no que está vivo)
+   ====================================================================== */
+.vC{--bg:#0a0d10;--p1:#0f1418;--p2:#151c22;--line:#1f2830;--text:#c4cdd5;--mute:#66727d;--cyan:#4fd1e0;--red:#e5534b;--amber:#d4a24c;--stop:#4b555e;
+  background:var(--bg);color:var(--text);font:12.5px/1.45 "JetBrains Mono",monospace}
+.vC .c-root{height:100%;display:grid;grid-template-rows:38px 1fr 24px;position:relative}
+.vC .c-head{display:flex;align-items:center;gap:12px;padding:0 12px;border-bottom:1px solid var(--line);background:var(--p1)}
+.vC .c-radar{width:18px;height:18px;border-radius:50%;border:1px solid var(--cyan);position:relative;overflow:hidden;flex:none;
+  background:repeating-radial-gradient(circle,transparent 0 3px,rgba(79,209,224,.25) 3px 4px)}
+.vC .c-radar::after{content:"";position:absolute;inset:0;background:conic-gradient(from 0deg,rgba(79,209,224,.75),transparent 25%);animation:spin 3s linear infinite}
+.vC .c-logo{font:700 16px "Big Shoulders Display";letter-spacing:.22em}
+.vC .c-crumb{color:var(--mute)}
+.vC .c-filter{margin-left:auto;border:1px solid var(--line);color:var(--mute);padding:3px 10px;min-width:180px;background:var(--bg)}
+.vC kbd{font:10.5px "JetBrains Mono";border:1px solid var(--line);border-bottom-width:2px;padding:0 4px;color:var(--mute);margin-left:6px}
+.vC .c-btn{background:var(--p2);border:1px solid var(--line);padding:4px 10px;font-size:12px}
+.vC .c-btn:hover:not(:disabled){border-color:var(--mute)}
+.vC .c-btn.go{color:var(--cyan);border-color:rgba(79,209,224,.5)}
+.vC .c-btn.go:hover:not(:disabled){background:rgba(79,209,224,.12)}
+.vC .c-btn.halt{color:var(--red);border-color:rgba(229,83,75,.5)}
+.vC .c-btn.halt:hover:not(:disabled){background:rgba(229,83,75,.12)}
+.vC .c-body{display:grid;grid-template-columns:250px 1fr;min-height:0}
+.vC .c-list{border-right:1px solid var(--line);overflow:auto;padding:6px 0}
+.vC .c-listh{display:flex;justify-content:space-between;padding:4px 12px 6px;color:var(--mute);font-size:10.5px;letter-spacing:.14em}
+.vC .c-row{height:30px;display:grid;grid-template-columns:12px 1fr auto;align-items:center;gap:10px;padding:0 10px 0 12px;cursor:pointer;border-left:2px solid transparent}
+.vC .c-row:hover{background:var(--p1)}
+.vC .c-row.sel{background:var(--p2);border-left-color:var(--cyan)}
+.vC .c-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vC .c-st{color:var(--mute);font-size:11px}
+.vC .c-row .c-q{display:none;background:none;border:1px solid var(--line);font-size:10px;padding:1px 6px}
+.vC .c-row:hover .c-q{display:block}
+.vC .c-row:hover .c-st{display:none}
+.vC .led{width:8px;height:8px;display:inline-block;border:1.5px solid var(--stop);flex:none}
+.vC .led.run{background:var(--cyan);border-color:var(--cyan);box-shadow:0 0 6px rgba(79,209,224,.8);animation:pulse 2s ease-in-out infinite}
+.vC .led.err{background:var(--red);border:0;width:10px;height:9px;clip-path:polygon(50% 0,100% 100%,0 100%)}
+.vC .led.busy{border-color:var(--amber);background:repeating-linear-gradient(45deg,var(--amber) 0 2px,transparent 2px 4px)}
+@keyframes pulse{50%{box-shadow:0 0 1px rgba(79,209,224,.3)}}
+.vC .c-detail{display:flex;flex-direction:column;min-height:0;min-width:0}
+.vC .c-dh{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:12px 14px 8px}
+.vC .c-dh h2{margin:0;font:600 19px "JetBrains Mono";letter-spacing:-.01em}
+.vC .c-path{color:var(--mute);font-size:11.5px}
+.vC .c-dacts{display:flex;gap:6px;position:relative;flex-wrap:wrap;justify-content:flex-end}
+.vC .c-chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 10px;border-bottom:1px solid var(--line)}
+.vC .c-chips>span{display:inline-flex;align-items:center;gap:6px;background:var(--p1);border:1px solid var(--line);padding:2px 8px;font-size:11.5px}
+.vC .c-chips em{font-style:normal;color:var(--mute)}
+.vC .c-chips .err{color:var(--red)}
+.vC .c-chips .run{color:var(--cyan)}
+.vC .log{flex:1;background:#07090b;padding:6px 0;font:12px/1.55 "JetBrains Mono",monospace}
+.vC .ln{grid-template-columns:66px 1fr;padding:0 14px}
+.vC .ln .n{display:none}
+.vC .ln .t{color:#3e4851}
+.vC .ln.err{background:rgba(229,83,75,.07)}
+.vC .ln.err .x{color:#f0857e}
+.vC .ln.sys .x{color:var(--amber)}
+.vC .log-empty{padding:30px;color:var(--mute);text-align:center}
+.vC .c-status{display:flex;align-items:center;gap:0;border-top:1px solid var(--line);background:var(--p1);font-size:11px;color:var(--mute)}
+.vC .c-status span{white-space:nowrap;padding:0 10px;border-right:1px solid var(--line);height:100%;display:flex;align-items:center;gap:6px}
+.vC .c-status .mode{background:var(--cyan);color:var(--bg);font-weight:700;letter-spacing:.1em}
+.vC .c-status .r{margin-left:auto;border-left:1px solid var(--line);border-right:0}
+.vC .menu{background:var(--p2);border:1px solid var(--line);padding:3px;box-shadow:0 10px 24px rgba(0,0,0,.5)}
+.vC .menu button{padding:5px 10px;font-size:12px}
+.vC .menu button:hover{background:var(--line)}
+.vC .menu .danger{color:var(--red)}
+.vC .c-empty{grid-column:1/-1;display:grid;place-content:center;justify-items:center;gap:8px;text-align:center}
+.vC .c-empty h2{margin:0;font:600 16px "JetBrains Mono"}
+.vC .c-empty p{margin:0 0 6px;color:var(--mute)}
+.vC .c-drawer-bg{position:absolute;inset:38px 0 24px 0;background:rgba(5,7,9,.6);z-index:40}
+.vC .c-drawer{position:absolute;top:38px;bottom:24px;right:0;width:380px;z-index:41;background:var(--p1);border-left:1px solid var(--line);
+  box-shadow:-20px 0 40px rgba(0,0,0,.4);display:flex;flex-direction:column}
+.vC .c-drawer header{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line)}
+.vC .c-drawer header b{font-size:13px}
+.vC .c-form{flex:1;overflow:auto;padding:12px 14px;display:flex;flex-direction:column;gap:14px}
+.vC .c-f label,.vC .c-f .lab{display:block;font-size:10.5px;letter-spacing:.12em;color:var(--mute);margin-bottom:4px;text-transform:uppercase}
+.vC .c-f input{width:100%;background:var(--bg);border:1px solid var(--line);padding:6px 8px;outline:none}
+.vC .c-f input:focus{border-color:var(--cyan)}
+.vC .c-f input:disabled{opacity:.5}
+.vC .c-inrow{display:flex;gap:6px}
+.vC .c-opts{border:1px solid var(--line);background:var(--bg)}
+.vC .c-opt{display:block;width:100%;text-align:left;background:none;border:0;padding:5px 8px;color:var(--text)}
+.vC .c-opt::before{content:"  ";white-space:pre;color:var(--cyan)}
+.vC .c-opt.on{background:var(--p2)}
+.vC .c-opt.on::before{content:"› "}
+.vC .c-opt:hover{background:var(--p2)}
+.vC .c-hint{color:var(--mute);font-size:11.5px;margin:2px 0 6px}
+.vC .c-warn{border:1px solid rgba(212,162,76,.5);color:var(--amber);padding:6px 10px;font-size:11.5px}
+.vC .c-warn.err{border-color:rgba(229,83,75,.5);color:var(--red)}
+.vC .c-formacts{display:flex;justify-content:flex-end;gap:6px;padding:10px 14px;border-top:1px solid var(--line)}
+.vC .ov{background:rgba(5,7,9,.7)}
+.vC .dlg{background:var(--p1);border:1px solid var(--line);padding:16px;width:min(340px,86%)}
+.vC .dlg h3{margin:0 0 6px;font-size:14px}
+.vC .dlg p{margin:0 0 14px;color:var(--mute)}
+.vC .dlg .acts{display:flex;gap:6px;justify-content:flex-end}
+.vC .dlg button{background:var(--p2);border:1px solid var(--line);padding:4px 10px}
+.vC .dlg .yes{color:var(--red);border-color:rgba(229,83,75,.5)}
+.vC .toast{background:var(--p2);border:1px solid var(--line);border-left:2px solid var(--cyan);padding:6px 12px;font-size:12px}
+.vC.size-p .c-body{grid-template-columns:1fr}
+.vC.size-p .c-filter,.vC.size-p .c-status .r{display:none}
+.vC.size-p .c-list{border-right:0}
+.vC.size-p .c-drawer{width:100%}
+.vC.size-p .c-row{height:36px}
+.vC .c-back{background:none;border:0;color:var(--mute);padding:0;margin-bottom:4px;font-size:11.5px}
+/* imersivo: ondas de sonar e linhas de varredura discretas */
+.vC.fx .c-detail{background:radial-gradient(circle at 85% 110%,rgba(79,209,224,.07),transparent 40%)}
+.vC.fx .log{background:repeating-radial-gradient(circle at 100% 120%,transparent 0 38px,rgba(79,209,224,.035) 38px 39px),#07090b}
+.vC.fx::after{content:"";position:absolute;inset:0;z-index:30;pointer-events:none;background:repeating-linear-gradient(transparent 0 3px,rgba(0,0,0,.18) 3px 4px)}
+.vC.fx .c-row.sel{box-shadow:inset 0 0 20px rgba(79,209,224,.06)}
+.vC.fx .c-logo{text-shadow:0 0 12px rgba(79,209,224,.35)}
+.vC.fx .ln.err{border-left:2px solid var(--red)}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="2.4"/></filter>
+</svg>
+
+<div class="win" id="win">
+  <div class="titlebar"><span class="t">Bat-Computer</span><span class="w">—</span><span class="w">☐</span><span class="w">✕</span></div>
+  <div class="app" id="app"></div>
+</div>
+<div id="bar"></div>
+
+<script>
+// ---------------- dados de mentira ----------------
+const T0 = Date.now();
+const ts = d => new Date(d).toTimeString().slice(0, 8);
+
+const PROJ = [
+  { id:'p1', name:'portfolio-site', path:'C:\\Projetos\\portfolio-site', command:'npm run dev', url:'http://localhost:5173', status:'RODANDO', since:T0-42*60e3-17e3, scripts:['dev','build','preview','lint'] },
+  { id:'p2', name:'api-financas', path:'C:\\Projetos\\api-financas', command:'npm run start', url:'http://localhost:3000', status:'ERRO', exitCode:1, scripts:['start','dev','test'] },
+  { id:'p3', name:'notas-electron', path:'C:\\Projetos\\notas-electron', command:'npm run electron', url:'', status:'PARADO', scripts:['dev','electron','build'] },
+  { id:'p4', name:'bot-discord', path:'C:\\Projetos\\bot-discord', command:'npm run dev', url:'', status:'RODANDO', since:T0-3*3600e3-8*60e3, scripts:['dev','start'] },
+  { id:'p5', name:'painel-oee', path:'C:\\Projetos\\painel-oee', command:'python -m http.server 8080', url:'http://localhost:8080', status:'PARADO', scripts:[] },
+];
+
+function seed(lines, minutesAgo){
+  let t = T0 - minutesAgo*60e3;
+  return lines.map(l => { t += 900 + (l[0].length*37 % 4000); return { t:ts(t), x:l[0], s:l[1]||'out' }; });
+}
+const LOGS = {
+  p1: seed([['> portfolio-site@0.3.1 dev'],['> vite'],[''],['  VITE v5.4.10  ready in 412 ms'],[''],['  ➜  Local:   http://localhost:5173/'],['  ➜  Network: use --host to expose'],
+    ['[vite] hmr update /src/components/Hero.tsx'],['[vite] hmr update /src/components/Hero.tsx'],["[eslint] src/App.tsx: 'useMemo' is defined but never used",'err'],
+    ['[vite] page reload src/main.tsx'],['[vite] hmr update /src/styles/global.css'],['[vite] hmr update /src/pages/Projetos.tsx'],['[vite] hmr update /src/pages/Projetos.tsx'],
+    ['[vite] hmr update /src/components/Card.tsx'],['[vite] hmr update /src/styles/global.css'],['[vite] page reload src/data/projetos.ts'],['[vite] hmr update /src/components/Hero.tsx'],
+    ['[vite] hmr update /src/pages/Contato.tsx'],["[eslint] src/pages/Contato.tsx: Unexpected console statement",'err'],['[vite] hmr update /src/pages/Contato.tsx']], 42),
+  p2: seed([['> api-financas@1.0.0 start'],['> node src/server.js'],[''],['node:internal/modules/cjs/loader:1228','err'],['  throw err;','err'],['  ^','err'],['','err'],
+    ["Error: Cannot find module 'dotenv'",'err'],['Require stack:','err'],['- C:\\Projetos\\api-financas\\src\\server.js','err'],
+    ['    at Module._resolveFilename (node:internal/modules/cjs/loader:1225:15)','err'],['    at Module._load (node:internal/modules/cjs/loader:1051:27)','err'],
+    ['    at Module.require (node:internal/modules/cjs/loader:1311:19)','err'],["  code: 'MODULE_NOT_FOUND',",'err'],['','err'],['Node.js v20.11.1','err'],
+    ['[processo encerrado com código 1]','sys']], 6),
+  p3: [],
+  p4: seed([['> bot-discord@2.1.0 dev'],['> nodemon src/index.js'],['[nodemon] 3.1.0'],['[nodemon] watching path(s): src/**/*'],['[nodemon] starting `node src/index.js`'],
+    ['[bot] conectando ao gateway…'],['[bot] conectado. 3 servidores, 41 canais.'],['[scheduler] tarefa "lembrete-diario" agendada para 08:00'],['[bot] comando /status executado (12ms)'],
+    ['[bot] heartbeat ok (41ms)'],['[bot] mensagem recebida em #geral'],['[bot] heartbeat ok (38ms)'],['[bot] comando /clima executado (220ms)'],['[warn] rate limit próximo: 45/50 em #geral','err'],['[bot] heartbeat ok (44ms)']], 188),
+  p5: seed([['> python -m http.server 8080'],['Serving HTTP on :: port 8080 (http://[::]:8080/) ...'],['::1 - - [24/Oct/2026 18:02:11] "GET / HTTP/1.1" 200 -'],
+    ['::1 - - [24/Oct/2026 18:02:11] "GET /app.js HTTP/1.1" 200 -'],['::1 - - [24/Oct/2026 18:02:12] "GET /favicon.ico HTTP/1.1" 404 -','err'],['[processo encerrado pelo Bat-Computer]','sys']], 300),
+};
+const START = {
+  p1:['> portfolio-site@0.3.1 dev','> vite','','  VITE v5.4.10  ready in 398 ms','','  ➜  Local:   http://localhost:5173/'],
+  p2:null, // sempre falha: mostra o caminho do ERRO
+  p3:['> notas-electron@0.9.0 electron','> electron .','[main] janela criada (1280×800)','[renderer] carregado em 640ms'],
+  p4:['> bot-discord@2.1.0 dev','> nodemon src/index.js','[nodemon] starting `node src/index.js`','[bot] conectado. 3 servidores, 41 canais.'],
+  p5:['> python -m http.server 8080','Serving HTTP on :: port 8080 (http://[::]:8080/) ...'],
+};
+const POOL = {
+  p1:['[vite] hmr update /src/components/Hero.tsx','[vite] hmr update /src/styles/global.css','[vite] page reload src/main.tsx','[vite] hmr update /src/pages/Projetos.tsx'],
+  p3:['[main] ipc: notas:salvar (3ms)','[renderer] autosave ok','[main] ipc: notas:listar (1ms)'],
+  p4:['[bot] heartbeat ok (40ms)','[bot] mensagem recebida em #geral','[bot] comando /status executado (11ms)','[bot] heartbeat ok (47ms)'],
+  p5:['::1 - - "GET / HTTP/1.1" 200 -','::1 - - "GET /dados.json HTTP/1.1" 200 -'],
+  _:['GET / 200 4ms','GET /assets/index.js 200 2ms','[watch] arquivo alterado, recompilando…','[watch] pronto em 182ms'],
+};
+
+// ---------------- estado ----------------
+const Q = new URLSearchParams(location.search);
+const S = {
+  variant: ['A','B','C'].includes((Q.get('variant')||'').toUpperCase()) ? Q.get('variant').toUpperCase() : 'A',
+  screen: ['list','detail','form'].includes(Q.get('screen')) ? Q.get('screen') : 'list',
+  fx: Q.get('fx') !== '0', size: Q.get('size') === 'p' ? 'p' : 'm', empty: Q.get('empty') === '1',
+  sel:'p1', menu:null, confirm:null, form:null, toast:null, boot:false,
+};
+
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const projects = () => S.empty ? [] : PROJ;
+const sel = () => projects().find(p => p.id === S.sel);
+const stc = p => p.pending ? 'busy' : {PARADO:'stop', RODANDO:'run', ERRO:'err'}[p.status];
+const stLabel = p => p.pending === 'start' ? 'INICIANDO' : p.pending === 'stop' ? 'PARANDO' : p.status;
+const isOn = p => p.status === 'RODANDO';
+const canOpen = p => p.url && isOn(p) && !p.pending;
+const pad = (n, k=2) => String(n).padStart(k, '0');
+const num = p => pad(PROJ.indexOf(p) + 1, 3);
+const counts = () => ({ run: projects().filter(isOn).length, err: projects().filter(p => p.status === 'ERRO').length });
+function uptime(p){ if (!isOn(p) || !p.since) return '—'; const s = (Date.now() - p.since) / 1000 | 0; return `${pad(s/3600|0)}:${pad(s/60%60|0)}:${pad(s%60)}`; }
+const lastErr = p => [...LOGS[p.id]].reverse().find(l => l.s === 'err' && /error|Error/.test(l.x))?.x || `código ${p.exitCode}`;
+const hash = (s, i) => { let h = i * 7919; for (const c of s) h = (h * 31 + c.charCodeAt(0)) % 9973; return h; };
+
+function screenNow(){
+  if (S.screen === 'form' && !S.form) S.form = newForm('add');
+  if (S.screen === 'detail' && !sel()) return 'list';
+  return S.screen;
+}
+function newForm(mode, p){
+  const scripts = p ? p.scripts : [];
+  const custom = p ? !scripts.map(s => 'npm run ' + s).includes(p.command) : false;
+  return { mode, id:p?.id, name:p?.name||'', path:p?.path||'', scripts, cmd: custom ? '__custom' : (p?.command||''), customCmd: custom ? p.command : '',
+    url:p?.url||'', error:null, locked: !!p && isOn(p) };
+}
+function cmdModel(f){
+  const opts = f.scripts.map(s => ({ v:'npm run ' + s, on: f.cmd === 'npm run ' + s }));
+  if (f.scripts.length) opts.push({ v:'__custom', label:'Outro comando…', on: f.cmd === '__custom' });
+  const showFree = !f.scripts.length || f.cmd === '__custom';
+  const hint = !f.path ? 'Informe a pasta para ler os scripts do package.json.' : !f.scripts.length ? 'Sem package.json nesta pasta: digite o comando.' : '';
+  return { opts, showFree, hint };
+}
+
+function lineHtml(l, i){ return `<div class="ln ${l.s}"><span class="n">${i+1}</span><span class="t">${l.t}</span><span class="x">${esc(l.x) || ' '}</span></div>`; }
+function logHtml(p, emptyMsg){
+  const ls = LOGS[p.id] || [];
+  return `<div class="log" data-log="${p.id}" data-scroll="log-${p.id}">${ls.length ? ls.map(lineHtml).join('') : `<div class="log-empty">${emptyMsg}</div>`}</div>`;
+}
+function menuHtml(p){
+  if (S.menu !== p.id) return '';
+  return `<div class="menu"><button data-act="edit" data-id="${p.id}" ${isOn(p)?'title="Pare o projeto para editar"':''}>Editar</button><button class="danger" data-act="del" data-id="${p.id}">Apagar</button></div>`;
+}
+function overlays(){
+  let h = '';
+  const p = PROJ.find(x => x.id === S.confirm);
+  if (p) h += `<div class="ov"><div class="dlg"><h3>Apagar ${esc(p.name)}?</h3><p>${isOn(p) ? 'Ele está rodando: o processo será parado antes. ' : ''}Os logs também somem.</p>
+    <div class="acts"><button class="no" data-act="del-no">Cancelar</button><button class="yes" data-act="del-yes" data-id="${p.id}">Apagar</button></div></div></div>`;
+  if (S.toast) h += `<div class="toast" key="${S.toast.k}">${esc(S.toast.msg)}</div>`;
+  if (S.boot) h += `<div class="boot"><div>&gt; NÚCLEO DE PROJETOS <span>…OK</span></div><div>&gt; SUPERVISOR DE PROCESSOS <span>…OK</span></div>
+    <div>&gt; BUFFER DE LOGS 1000 LINHAS <span>…OK</span></div><div>&gt; ${PROJ.length} MÓDULOS CARREGADOS <span>…OK</span></div><div>&gt; ACESSO CONCEDIDO_</div></div>`;
+  return h;
+}
+
+// =====================================================================
+// A · Arquivo de Caso
+// =====================================================================
+const aTog = p => p.pending === 'start' ? 'LIGANDO…' : p.pending === 'stop' ? 'DESLIGANDO…' : isOn(p) ? 'DESLIGAR' : 'LIGAR';
+function aHead(){
+  return `<header class="a-head"><span class="a-kicker">DIVISÃO DE PROJETOS · ARQUIVO ATIVO</span>
+    <h1 class="a-title">BAT<i>—</i>COMPUTER</h1><button class="a-add" data-act="add">+ ADICIONAR</button></header>`;
+}
+function aList(){
+  const ps = projects(), n = counts();
+  const rows = ps.map(p => `
+    <div class="a-row" data-act="open" data-id="${p.id}">
+      <span class="a-num">${num(p)}</span>
+      <span class="a-proj"><b>${esc(p.name)}</b><i>${esc(p.command)}</i></span>
+      <span><span class="a-stamp s-${stc(p)}">${stLabel(p)}</span></span>
+      <span class="a-acts">
+        ${canOpen(p) ? `<button class="a-link" data-act="url" data-id="${p.id}" title="Abrir no navegador">↗ abrir</button>` : ''}
+        <button class="a-btn ${isOn(p)?'on':''}" data-act="toggle" data-id="${p.id}" ${p.pending?'disabled':''}>${aTog(p)}</button>
+        <button class="a-dots" data-act="menu" data-id="${p.id}" title="Mais">⋯</button>${menuHtml(p)}
+      </span>
+    </div>`).join('');
+  return `<div class="a-root">${aHead()}
+    ${ps.length ? `<div class="a-ledger" data-scroll="list"><div class="a-row a-hrow"><span>Nº</span><span>PROJETO / COMANDO</span><span>SITUAÇÃO</span><span></span></div>${rows}</div>`
+      : `<div class="a-empty"><h2>NENHUM CASO ABERTO</h2><p>Cadastre o primeiro projeto para começar.</p><div><button class="a-add" data-act="add">+ ADICIONAR</button></div></div>`}
+    <footer class="a-foot"><span>${ps.length} arquivos · ${n.run} em atividade · ${n.err} com falha</span><span>TURNO DA NOITE · <span data-clock></span></span></footer>
+  </div>`;
+}
+function aDetail(p){
+  const last = p.status === 'ERRO' ? ['ENCERRADO COM', `código ${p.exitCode}`] : isOn(p) ? ['EM ATIVIDADE HÁ', `<span data-up="${p.id}">${uptime(p)}</span>`] : ['EM ATIVIDADE HÁ', '—'];
+  return `<div class="a-root">
+    <div class="a-topline"><button class="a-back" data-act="back">← VOLTAR AO ARQUIVO</button><span class="a-kicker">ARQUIVO Nº ${num(p)}</span></div>
+    <section class="a-dossier">
+      <div class="a-dhead"><h1 class="a-title a-name">${esc(p.name)}</h1><span class="a-stamp big s-${stc(p)}">${stLabel(p)}</span></div>
+      <dl class="a-meta"><dt>LOCAL</dt><dd>${esc(p.path)}</dd><dt>COMANDO</dt><dd>${esc(p.command)}</dd>
+        <dt>ENDEREÇO</dt><dd>${p.url ? esc(p.url) : '—'}</dd><dt>${last[0]}</dt><dd>${last[1]}</dd></dl>
+      <div class="a-dacts">
+        <button class="a-btn ${isOn(p)?'on':''}" data-act="toggle" data-id="${p.id}" ${p.pending?'disabled':''}>${aTog(p)}</button>
+        ${canOpen(p) ? `<button class="a-link" data-act="url" data-id="${p.id}">↗ abrir no navegador</button>` : ''}
+        <span class="sp"></span>
+        <button class="a-btn" data-act="edit" data-id="${p.id}">EDITAR</button>
+        <button class="a-btn" data-act="del" data-id="${p.id}" style="color:var(--red)">APAGAR</button>
+      </div>
+    </section>
+    <section class="a-trans"><div class="a-trans-h"><span>TRANSCRIÇÃO · SAÍDA DO PROCESSO</span><span>${LOGS[p.id].length} / 1000 linhas</span></div>
+      ${logHtml(p, 'Nenhum depoimento registrado. Ligue o projeto para ouvir a saída.')}</section>
+  </div>`;
+}
+function aForm(f){
+  const m = cmdModel(f), dis = f.locked ? 'disabled' : '';
+  return `<div class="a-root">
+    <div class="a-topline"><button class="a-back" data-act="cancel">← DESCARTAR</button><span class="a-kicker">${f.mode === 'add' ? `FICHA Nº ${pad(PROJ.length+1,3)}` : 'ALTERAÇÃO DE FICHA'}</span></div>
+    <h1 class="a-title" style="border-bottom:2px solid var(--red);padding-bottom:10px">${f.mode === 'add' ? 'NOVO <i>CASO</i>' : 'ALTERAR <i>FICHA</i>'}</h1>
+    ${f.locked ? `<div class="a-warn">Ficha lacrada: o projeto está rodando. Desligue-o para alterar.</div>` : ''}
+    ${f.error ? `<div class="a-warn err">${esc(f.error)}</div>` : ''}
+    <div class="a-form" data-scroll="form">
+      <label class="a-f"><span>NOME</span><input data-f="name" value="${esc(f.name)}" placeholder="meu-projeto" ${dis}></label>
+      <div class="a-f"><span>PASTA</span><div class="a-inrow"><input data-f="path" value="${esc(f.path)}" placeholder="C:\\Projetos\\…" ${dis}><button class="a-btn" data-act="browse" ${dis}>PROCURAR…</button></div></div>
+      <div class="a-f"><span>COMANDO</span>
+        ${m.hint ? `<div class="a-hint">${m.hint}</div>` : ''}
+        ${m.opts.map(o => `<button class="a-radio ${o.on?'on':''}" data-act="pick" data-v="${esc(o.v)}" ${dis}>${esc(o.label || o.v)}</button>`).join('')}
+        ${m.showFree ? `<input data-f="customCmd" value="${esc(f.customCmd)}" placeholder="ex.: python -m http.server" ${dis}>` : ''}
+      </div>
+      <label class="a-f"><span>ENDEREÇO <em>(opcional)</em></span><input data-f="url" value="${esc(f.url)}" placeholder="http://localhost:5173" ${dis}></label>
+    </div>
+    <div class="a-formacts"><button class="a-primary" data-act="save" ${dis}>ARQUIVAR FICHA</button><button class="a-link" data-act="cancel" style="color:var(--mute)">descartar</button></div>
+  </div>`;
+}
+
+// =====================================================================
+// B · Holograma
+// =====================================================================
+function bHud(){
+  const n = counts();
+  return `<header class="b-hud"><div class="b-logo"><span class="b-gem"></span><div>BAT·COMPUTER<small>NÚCLEO DE PROJETOS // v0.1</small></div></div>
+    <div class="b-tele"><div><em>ATIVOS</em><b class="run">${pad(n.run)}</b></div><div><em>FALHAS</em><b class="${n.err?'err':''}">${pad(n.err)}</b></div><div><em>RELÓGIO</em><b data-clock></b></div></div></header>`;
+}
+function bSignal(p){
+  if (p.pending) return `<div class="b-load"></div>`;
+  if (isOn(p)) return `<div class="b-spark">${Array.from({length:28}, (_, i) => `<i style="--h:${20 + hash(p.id, i) % 80};--d:-${(hash(p.id, i+40) % 16) / 10}s"></i>`).join('')}</div>`;
+  if (p.status === 'ERRO') return `<div class="b-fault">▲ ${esc(lastErr(p))}</div>`;
+  return `<div class="b-flat"></div>`;
+}
+const bTog = p => p.pending === 'start' ? 'INICIANDO…' : p.pending === 'stop' ? 'PARANDO…' : isOn(p) ? '■ PARAR' : '▶ INICIAR';
+function bList(){
+  const ps = projects();
+  const mods = ps.map(p => `
+    <article class="b-mod st-${stc(p)}" data-act="open" data-id="${p.id}">
+      <div class="b-mtop"><span class="b-led"></span><span class="b-st">${stLabel(p)}</span>
+        <span class="b-up">${isOn(p) ? `T+<span data-up="${p.id}">${uptime(p)}</span>` : p.status === 'ERRO' ? `EXIT ${p.exitCode}` : '—'}</span></div>
+      <h3>${esc(p.name)}</h3><code>&gt; ${esc(p.command)}</code>
+      ${bSignal(p)}
+      <div class="b-macts">
+        <button class="b-btn ${isOn(p)?'warn':''}" data-act="toggle" data-id="${p.id}" ${p.pending?'disabled':''}>${bTog(p)}</button>
+        ${canOpen(p) ? `<button class="b-btn ghost" data-act="url" data-id="${p.id}">⇱ ABRIR</button>` : ''}
+        <button class="b-btn ghost sq" data-act="menu" data-id="${p.id}">⋯</button>${menuHtml(p)}
+      </div>
+    </article>`).join('');
+  return `<div class="b-root">${bHud()}
+    <div class="b-bar"><span class="b-cap">// MÓDULOS REGISTRADOS <b>[${pad(ps.length)}]</b></span><button class="b-btn" data-act="add">+ NOVO MÓDULO</button></div>
+    ${ps.length ? `<div class="b-grid" data-scroll="list">${mods}</div>`
+      : `<div class="b-empty"><h2>NENHUM MÓDULO</h2><p>O núcleo está vazio. Registre um projeto para começar.</p><button class="b-btn" data-act="add">+ NOVO MÓDULO</button></div>`}
+  </div>`;
+}
+function bDetail(p){
+  return `<div class="b-root">${bHud()}
+    <div class="b-bar"><button class="b-btn ghost" data-act="back">◂ MÓDULOS</button><span class="b-cap">// MÓDULO <b>${esc(p.name)}</b></span></div>
+    <div class="b-detail">
+      <aside class="b-core st-${stc(p)}">
+        <div class="b-ring"><svg viewBox="0 0 120 120"><circle class="r0" cx="60" cy="60" r="56"/><circle class="r1" cx="60" cy="60" r="52"/><circle class="r2" cx="60" cy="60" r="42"/></svg>
+          <div class="b-ringc"><b>${stLabel(p)}</b><small>${isOn(p) ? `T+<span data-up="${p.id}">${uptime(p)}</span>` : p.status === 'ERRO' ? `EXIT ${p.exitCode}` : 'EM ESPERA'}</small></div></div>
+        <dl class="b-dl"><dt>CAMINHO</dt><dd>${esc(p.path)}</dd><dt>COMANDO</dt><dd>&gt; ${esc(p.command)}</dd><dt>ENDEREÇO</dt><dd>${p.url ? esc(p.url) : '—'}</dd></dl>
+        <div class="b-cacts">
+          <button class="b-btn ${isOn(p)?'warn':''}" data-act="toggle" data-id="${p.id}" ${p.pending?'disabled':''}>${bTog(p)}</button>
+          ${canOpen(p) ? `<button class="b-btn ghost" data-act="url" data-id="${p.id}">⇱ ABRIR</button>` : ''}
+          <button class="b-btn ghost" data-act="edit" data-id="${p.id}">EDITAR</button>
+          <button class="b-btn ghost" data-act="del" data-id="${p.id}" style="color:var(--red)!important">APAGAR</button>
+        </div>
+      </aside>
+      <section class="b-stream"><div class="b-streamh"><span>// FLUXO DE SAÍDA</span><span>STDOUT+STDERR · ${LOGS[p.id].length}/1000</span></div>
+        ${logHtml(p, 'SEM SINAL. INICIE O MÓDULO PARA RECEBER A SAÍDA.')}</section>
+    </div>
+  </div>`;
+}
+function bForm(f){
+  const m = cmdModel(f), dis = f.locked ? 'disabled' : '';
+  return `<div class="b-root">${bHud()}
+    <div class="b-bar"><button class="b-btn ghost" data-act="cancel">◂ CANCELAR</button><span class="b-cap">// ${f.mode === 'add' ? 'REGISTRAR NOVO MÓDULO' : `RECONFIGURAR <b>${esc(f.name)}</b>`}</span></div>
+    ${f.locked ? `<div class="b-warn">▲ MÓDULO EM EXECUÇÃO. PARE-O PARA RECONFIGURAR.</div>` : ''}
+    ${f.error ? `<div class="b-warn err">▲ ${esc(f.error)}</div>` : ''}
+    <div class="b-form" data-scroll="form">
+      <div class="b-sec"><span class="k">01</span><div><label>IDENTIFICAÇÃO</label><input data-f="name" value="${esc(f.name)}" placeholder="meu-projeto" ${dis}></div></div>
+      <div class="b-sec"><span class="k">02</span><div><label>ALVO // PASTA</label><div class="b-inrow"><input data-f="path" value="${esc(f.path)}" placeholder="C:\\Projetos\\…" ${dis}><button class="b-btn ghost" data-act="browse" ${dis}>PROCURAR</button></div></div></div>
+      <div class="b-sec"><span class="k">03</span><div><span class="lab">SEQUÊNCIA DE IGNIÇÃO // COMANDO</span>
+        ${m.hint ? `<div class="b-hint">${m.hint}</div>` : ''}
+        <div class="b-chips">${m.opts.map(o => `<button class="b-chip ${o.on?'on':''}" data-act="pick" data-v="${esc(o.v)}" ${dis}>${esc(o.label || o.v)}</button>`).join('')}</div>
+        ${m.showFree ? `<input data-f="customCmd" value="${esc(f.customCmd)}" placeholder="ex.: python -m http.server" style="margin-top:6px" ${dis}>` : ''}</div></div>
+      <div class="b-sec"><span class="k">04</span><div><label>CANAL // URL (OPCIONAL)</label><input data-f="url" value="${esc(f.url)}" placeholder="http://localhost:5173" ${dis}></div></div>
+    </div>
+    <div class="b-formacts"><button class="b-btn ghost" data-act="cancel">CANCELAR</button><button class="b-btn" data-act="save" ${dis}>${f.mode === 'add' ? 'REGISTRAR' : 'SALVAR'}</button></div>
+  </div>`;
+}
+
+// =====================================================================
+// C · Console de Sonar
+// =====================================================================
+const cTog = p => p.pending === 'start' ? 'iniciando…' : p.pending === 'stop' ? 'parando…' : isOn(p) ? '■ stop' : '▶ start';
+function cRows(){
+  const ps = projects();
+  return `<div class="c-list" data-scroll="list"><div class="c-listh"><span>PROJETOS</span><span>${ps.length}</span></div>
+    ${ps.map(p => `<div class="c-row ${p.id === S.sel ? 'sel' : ''}" data-act="open" data-id="${p.id}">
+      <span class="led ${stc(p)}"></span><span class="c-name">${esc(p.name)}</span>
+      <span class="c-st">${isOn(p) ? `<span data-up="${p.id}">${uptime(p)}</span>` : p.status === 'ERRO' ? `exit ${p.exitCode}` : p.pending ? '…' : 'parado'}</span>
+      <button class="c-q" data-act="toggle" data-id="${p.id}" ${p.pending?'disabled':''}>${isOn(p) ? '■' : '▶'}</button></div>`).join('')}</div>`;
+}
+function cDetail(p, back){
+  return `<section class="c-detail">
+    <div class="c-dh"><div>${back ? `<button class="c-back" data-act="back">← projetos</button>` : ''}<h2>${esc(p.name)}</h2><div class="c-path">${esc(p.path)}</div></div>
+      <div class="c-dacts">
+        <button class="c-btn ${isOn(p) ? 'halt' : 'go'}" data-act="toggle" data-id="${p.id}" ${p.pending?'disabled':''}>${cTog(p)}<kbd>S</kbd></button>
+        ${canOpen(p) ? `<button class="c-btn" data-act="url" data-id="${p.id}">abrir ↗</button>` : ''}
+        <button class="c-btn" data-act="edit" data-id="${p.id}">editar</button>
+        <button class="c-btn" data-act="menu" data-id="${p.id}">⋯</button>${menuHtml(p)}
+      </div></div>
+    <div class="c-chips">
+      <span><em>status</em><i class="led ${stc(p)}"></i><b class="${stc(p)}">${stLabel(p).toLowerCase()}</b></span>
+      <span><em>cmd</em>${esc(p.command)}</span>
+      ${p.url ? `<span><em>url</em>${esc(p.url)}</span>` : ''}
+      ${isOn(p) ? `<span><em>uptime</em><span data-up="${p.id}">${uptime(p)}</span></span>` : p.status === 'ERRO' ? `<span><em>exit</em><b class="err">${p.exitCode}</b></span>` : ''}
+    </div>
+    ${logHtml(p, 'sem saída. aperte S para iniciar.')}
+  </section>`;
+}
+function cForm(f){
+  const m = cmdModel(f), dis = f.locked ? 'disabled' : '';
+  return `<div class="c-drawer-bg" data-act="cancel"></div><aside class="c-drawer">
+    <header><b>${f.mode === 'add' ? 'novo projeto' : `editar · ${esc(f.name)}`}</b><button class="c-btn" data-act="cancel">esc</button></header>
+    <div class="c-form" data-scroll="form">
+      ${f.locked ? `<div class="c-warn">rodando: pare o projeto para editar.</div>` : ''}
+      ${f.error ? `<div class="c-warn err">${esc(f.error)}</div>` : ''}
+      <div class="c-f"><label>nome</label><input data-f="name" value="${esc(f.name)}" placeholder="meu-projeto" ${dis}></div>
+      <div class="c-f"><label>pasta</label><div class="c-inrow"><input data-f="path" value="${esc(f.path)}" placeholder="C:\\Projetos\\…" ${dis}><button class="c-btn" data-act="browse" ${dis}>procurar…</button></div></div>
+      <div class="c-f"><span class="lab">comando</span>${m.hint ? `<div class="c-hint">${m.hint}</div>` : ''}
+        ${m.opts.length ? `<div class="c-opts">${m.opts.map(o => `<button class="c-opt ${o.on?'on':''}" data-act="pick" data-v="${esc(o.v)}" ${dis}>${esc(o.label || o.v)}</button>`).join('')}</div>` : ''}
+        ${m.showFree ? `<input data-f="customCmd" value="${esc(f.customCmd)}" placeholder="python -m http.server" style="margin-top:6px" ${dis}>` : ''}</div>
+      <div class="c-f"><label>url (opcional)</label><input data-f="url" value="${esc(f.url)}" placeholder="http://localhost:5173" ${dis}></div>
+    </div>
+    <div class="c-formacts"><button class="c-btn" data-act="cancel">cancelar</button><button class="c-btn go" data-act="save" ${dis}>salvar <kbd>Ctrl+↵</kbd></button></div>
+  </aside>`;
+}
+function cRender(){
+  const s = screenNow(), ps = projects(), n = counts();
+  const p = sel() || ps[0];
+  const small = S.size === 'p';
+  let body;
+  if (!ps.length) body = `<div class="c-empty"><h2>nenhum projeto no radar</h2><p>cadastre o primeiro para começar.</p><button class="c-btn go" data-act="add">+ novo projeto <kbd>N</kbd></button></div>`;
+  else if (small) body = (s === 'detail' || (s === 'form' && S.form?.mode === 'edit')) && p ? cDetail(p, true) : cRows();
+  else body = cRows() + (p ? cDetail(p, false) : '');
+  return `<div class="c-root">
+    <header class="c-head"><span class="c-radar"></span><b class="c-logo">BAT-COMPUTER</b><span class="c-crumb">/ ${s === 'form' ? (S.form?.mode === 'add' ? 'novo' : 'editar') : p && (s === 'detail' || !small) ? esc(p.name) : 'projetos'}</span>
+      <span class="c-filter">/ filtrar projetos</span><button class="c-btn" data-act="add">+ novo<kbd>N</kbd></button></header>
+    <div class="c-body">${body}</div>
+    <footer class="c-status"><span class="mode">${s === 'form' ? 'EDIT' : 'LIVE'}</span><span><i class="led run" style="animation:none"></i>${n.run} rodando</span>
+      <span><i class="led err"></i>${n.err} erro</span><span>${ps.length} projetos</span><span class="r">↑↓ navegar · S start/stop · N novo</span><span data-clock></span></footer>
+    ${s === 'form' ? cForm(S.form) : ''}
+  </div>`;
+}
+
+// ---------------- registro das variações ----------------
+const V = {
+  A: { name:'Arquivo de Caso', tag:'noir · The Batman (2022) · Territory Studio', render(){ const s = screenNow(); return s === 'detail' ? aDetail(sel()) : s === 'form' ? aForm(S.form) : aList(); } },
+  B: { name:'Holograma', tag:'ciano · BvS (Perception) / Arkham', render(){ const s = screenNow(); return s === 'detail' ? bDetail(sel()) : s === 'form' ? bForm(S.form) : bList(); } },
+  C: { name:'Console de Sonar', tag:'híbrido · noir + ciano', render: cRender },
+};
+const KEYS = Object.keys(V);
+
+// ---------------- render ----------------
+const app = document.getElementById('app'), win = document.getElementById('win'), bar = document.getElementById('bar');
+function render(){
+  const saved = {};
+  app.querySelectorAll('[data-scroll]').forEach(el => saved[el.dataset.scroll] = { top: el.scrollTop, bottom: el.scrollHeight - el.scrollTop - el.clientHeight < 40 });
+  app.className = `app v${S.variant} size-${S.size}${S.fx ? ' fx' : ''}`;
+  app.innerHTML = V[S.variant].render() + overlays();
+  app.querySelectorAll('[data-scroll]').forEach(el => {
+    const sv = saved[el.dataset.scroll];
+    if (el.classList.contains('log')) el.scrollTop = (!sv || sv.bottom) ? el.scrollHeight : sv.top;
+    else if (sv) el.scrollTop = sv.top;
+  });
+  win.classList.toggle('p', S.size === 'p');
+  tick(true);
+  renderBar();
+  const q = new URLSearchParams({ variant:S.variant, screen:S.screen, fx:S.fx ? '1' : '0', size:S.size });
+  if (S.empty) q.set('empty', '1');
+  history.replaceState(null, '', '?' + q);
+}
+function renderBar(){
+  const v = V[S.variant];
+  const scr = [['list','Lista'],['detail','Detalhes'],['form','Formulário']];
+  bar.innerHTML = `<button class="arrow" data-b="prev" title="←">‹</button>
+    <span class="lbl"><b>${S.variant}</b>${v.name}<small>${v.tag}</small></span>
+    <button class="arrow" data-b="next" title="→">›</button><span class="sep"></span>
+    <div class="seg">${scr.map(([k, l]) => `<button data-b="screen" data-v="${k}" class="${screenNow() === k ? 'on' : ''}">${l}</button>`).join('')}</div><span class="sep"></span>
+    <button data-b="fx" class="${S.fx ? 'on' : ''}">${S.fx ? 'Efeitos: imersivo' : 'Efeitos: contido'}</button>
+    <button data-b="size">${S.size === 'p' ? 'Janela: pequena 480×640' : 'Janela: média 880×580'}</button>
+    <button data-b="empty" class="${S.empty ? 'on' : ''}">Lista vazia</button>`;
+}
+function go(screen){ S.screen = screen; S.menu = null; if (screen !== 'form') S.form = null; render(); }
+function setVariant(k){
+  S.variant = k; S.menu = null; S.confirm = null;
+  S.boot = k === 'B' && S.fx;
+  render();
+  if (S.boot) setTimeout(() => { S.boot = false; app.querySelector('.boot')?.remove(); }, 1900);
+}
+function toast(msg){ S.toast = { msg, k: Date.now() }; render(); clearTimeout(toast.t); toast.t = setTimeout(() => { S.toast = null; app.querySelector('.toast')?.remove(); }, 2600); }
+
+// ---------------- processo de mentira ----------------
+function push(p, x, s='out'){
+  const ls = LOGS[p.id], l = { t: ts(Date.now()), x, s };
+  ls.push(l); if (ls.length > 1000) ls.shift();
+  const el = app.querySelector(`[data-log="${p.id}"]`);
+  if (!el) return;
+  el.querySelector('.log-empty')?.remove();
+  const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 40;
+  el.insertAdjacentHTML('beforeend', lineHtml(l, ls.length - 1));
+  if (atBottom) el.scrollTop = el.scrollHeight;
+}
+function start(p){
+  p.pending = 'start'; render();
+  setTimeout(() => {
+    p.pending = null;
+    if (p.id === 'p2') {
+      ['> api-financas@1.0.0 start','> node src/server.js'].forEach(x => push(p, x));
+      ["Error: Cannot find module 'dotenv'",'Require stack:','- C:\\Projetos\\api-financas\\src\\server.js',"  code: 'MODULE_NOT_FOUND',"].forEach(x => push(p, x, 'err'));
+      push(p, '[processo encerrado com código 1]', 'sys');
+      p.status = 'ERRO'; p.exitCode = 1;
+    } else {
+      (START[p.id] || [`> ${p.command}`, 'pronto.']).forEach(x => push(p, x));
+      p.status = 'RODANDO'; p.since = Date.now(); p.exitCode = null;
+    }
+    render();
+  }, 1100);
+}
+function stop(p){
+  p.pending = 'stop'; render();
+  setTimeout(() => { p.pending = null; p.status = 'PARADO'; p.since = null; push(p, '[processo encerrado pelo Bat-Computer]', 'sys'); render(); }, 700);
+}
+function tick(onlyText){
+  app.querySelectorAll('[data-clock]').forEach(el => el.textContent = ts(Date.now()));
+  app.querySelectorAll('[data-up]').forEach(el => { const p = PROJ.find(x => x.id === el.dataset.up); if (p) el.textContent = uptime(p); });
+  if (onlyText) return;
+  PROJ.filter(p => isOn(p) && !p.pending).forEach(p => {
+    if (Math.random() < 0.3) { const pool = POOL[p.id] || POOL._; push(p, pool[Math.random() * pool.length | 0], Math.random() < .06 ? 'err' : 'out'); }
+  });
+}
+setInterval(() => tick(false), 1000);
+
+// ---------------- eventos ----------------
+app.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]');
+  if (!el) { if (S.menu) { S.menu = null; render(); } return; }
+  const id = el.dataset.id, p = PROJ.find(x => x.id === id), f = S.form;
+  switch (el.dataset.act) {
+    case 'open': S.sel = id; go('detail'); break;
+    case 'toggle': if (!p.pending) (isOn(p) ? stop : start)(p); break;
+    case 'url': toast(`Abriria ${p.url} no navegador padrão`); break;
+    case 'menu': S.menu = S.menu === id ? null : id; render(); break;
+    case 'edit': S.sel = id; S.menu = null; S.form = newForm('edit', p); S.screen = 'form'; render(); break;
+    case 'del': S.menu = null; S.confirm = id; render(); break;
+    case 'del-no': S.confirm = null; render(); break;
+    case 'del-yes': {
+      PROJ.splice(PROJ.indexOf(p), 1); S.confirm = null;
+      if (S.sel === id) S.sel = PROJ[0]?.id; go('list'); toast(`${p.name} apagado`); break;
+    }
+    case 'add': S.form = newForm('add'); S.screen = 'form'; S.menu = null; render(); break;
+    case 'back': go('list'); break;
+    case 'cancel': go(f?.mode === 'edit' ? 'detail' : 'list'); break;
+    case 'pick': f.cmd = el.dataset.v; render(); break;
+    case 'browse':
+      f.path = 'C:\\Projetos\\novo-projeto'; f.scripts = ['dev','build','preview','lint']; f.cmd = 'npm run dev';
+      if (!f.name) f.name = 'novo-projeto'; f.error = null; render(); break;
+    case 'save': save(); break;
+  }
+});
+app.addEventListener('input', e => { const k = e.target.dataset.f; if (k && S.form) S.form[k] = e.target.value; });
+app.addEventListener('change', e => {
+  if (e.target.dataset.f !== 'path' || !S.form) return;
+  const f = S.form; f.scripts = f.path && !/oee|python/i.test(f.path) ? ['dev','build','start'] : [];
+  if (!f.scripts.includes(f.cmd.replace('npm run ', ''))) f.cmd = f.scripts.length ? 'npm run ' + f.scripts[0] : '';
+  render();
+});
+function save(){
+  const f = S.form, cmd = (f.cmd === '__custom' || !f.scripts.length) ? f.customCmd : f.cmd;
+  if (!f.name.trim() || !f.path.trim() || !cmd.trim()) { f.error = 'Preencha nome, pasta e comando.'; return render(); }
+  if (!/^[a-zA-Z]:\\/.test(f.path)) { f.error = `Caminho inexistente: ${f.path}`; return render(); }
+  const data = { name:f.name.trim(), path:f.path.trim(), command:cmd.trim(), url:f.url.trim(), scripts:f.scripts };
+  if (f.mode === 'add') { const id = 'p' + Date.now(); PROJ.push({ id, status:'PARADO', ...data }); LOGS[id] = []; S.sel = id; S.empty = false; go('list'); toast(`${data.name} cadastrado`); }
+  else { Object.assign(PROJ.find(x => x.id === f.id), data); go('detail'); toast('Alterações salvas'); }
+}
+
+bar.addEventListener('click', e => {
+  const b = e.target.closest('[data-b]'); if (!b) return;
+  const i = KEYS.indexOf(S.variant);
+  switch (b.dataset.b) {
+    case 'prev': setVariant(KEYS[(i + KEYS.length - 1) % KEYS.length]); break;
+    case 'next': setVariant(KEYS[(i + 1) % KEYS.length]); break;
+    case 'screen': if (b.dataset.v === 'form') { S.form = S.form || newForm('add'); S.screen = 'form'; S.menu = null; render(); } else go(b.dataset.v); break;
+    case 'fx': S.fx = !S.fx; render(); break;
+    case 'size': S.size = S.size === 'p' ? 'm' : 'p'; render(); break;
+    case 'empty': S.empty = !S.empty; S.menu = null; render(); break;
+  }
+});
+document.addEventListener('keydown', e => {
+  const t = e.target;
+  if (t.matches('input,textarea,[contenteditable]')) { if (e.key === 'Escape' && S.screen === 'form') go(S.form?.mode === 'edit' ? 'detail' : 'list'); if (e.key === 'Enter' && e.ctrlKey && S.form) save(); return; }
+  const i = KEYS.indexOf(S.variant);
+  if (e.key === 'ArrowLeft') setVariant(KEYS[(i + KEYS.length - 1) % KEYS.length]);
+  else if (e.key === 'ArrowRight') setVariant(KEYS[(i + 1) % KEYS.length]);
+  else if (e.key === 'Escape') { if (S.confirm) { S.confirm = null; render(); } else if (S.screen === 'form') go(S.form?.mode === 'edit' ? 'detail' : 'list'); }
+  else if (S.variant === 'C' && S.screen !== 'form' && !S.confirm) {
+    const ps = projects(), j = ps.findIndex(p => p.id === S.sel);
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); const k = ps[(j + (e.key === 'ArrowDown' ? 1 : ps.length - 1)) % ps.length]; if (k) { S.sel = k.id; render(); } }
+    else if (e.key.toLowerCase() === 's' && sel() && !sel().pending) (isOn(sel()) ? stop : start)(sel());
+    else if (e.key.toLowerCase() === 'n') { S.form = newForm('add'); S.screen = 'form'; render(); }
+  }
+});
+
+if (S.screen === 'form') S.form = newForm('add');
+setVariant(S.variant);
+</script>
+</body>
+</html>
