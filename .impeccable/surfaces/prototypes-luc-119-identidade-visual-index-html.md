@@ -33,14 +33,16 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 ## Modo compacto (contrato)
 
-THESIS: o quadro deitado. A janela encolhe para uma barra de ~36px de altura que mora na borda da tela; cada projeto é uma faixa curta lado a lado, na ordem das baias (ativos, falha, espera), separadas por um traço. Recusa o widget de ícones soltos e o menu da bandeja.
+Aprovado pelo usuário em 2026-10-24, depois de descartar a barra deitada (horizontal) em favor de uma lista vertical com altura fixa e rolagem.
 
-OWN-WORLD: o mesmo do Quadro de Faixas: suporte colorido com forma, face #111C22, réguas de 1px, régua de tiques na base da barra, Barlow + JetBrains Mono. Sem halo, sem pulso.
+THESIS: a janela pequena encolhida. A mesma janela vira uma coluna de 236×170px (redimensionável de 200×110 até 420×640) que mora num canto da tela; as baias e as faixas de sempre, menores, com rolagem vertical. Recusa a barra deitada, o widget de ícones soltos e o menu da bandeja.
 
-STORY: com o editor aberto, o usuário bate o olho na barra, liga ou desliga um projeto com um clique e percebe na hora quando algo cai (contador vermelho ▲ e a faixa sobe 4px fora da linha).
+OWN-WORLD: o mesmo do Quadro de Faixas: suporte colorido com forma, face #111C22, réguas de 1px com tiques nos cabeçalhos de baia, Barlow + JetBrains Mono. Sem halo, sem pulso.
 
-FIRST VIEWPORT: alça de arrastar com a marca, alfinete (fixar no topo), contador de falha quando houver; faixas de 26px numa linha só (suporte 22px, nome, botão 26px; o estado fica na forma, na cor e no grupo, com o texto no title); expandir na ponta direita. Clicar no nome expande direto no log daquele projeto.
+STORY: com o editor aberto, o usuário bate o olho na coluna, liga ou desliga um projeto com um clique e percebe na hora quando algo cai (contador vermelho ▲N no cabeçalho, faixa deslocada 8px na baia FALHA e a lista rola sozinha até ela).
 
-FORM: Barra de faixas, item 3 da lista de estruturas; seed 019a0d38. Movimento: a mesma FLIP do quadro, agora na horizontal.
+FIRST VIEWPORT: cabeçalho de 32px (marca + BAT-COMPUTER como alça de arrastar, ▲N quando houver falha, + novo projeto, alfinete para fixar no topo, expandir); baias com cabeçalho de 18px (nome, contagem, régua), só as que têm faixas; faixas de 26px com ícone de estado (suporte de 20px), nome e botão ligar/desligar de 26px. Sem tempo rodando: o estado é o ícone (forma + cor) e o grupo de baia; a palavra fica no title e para leitores de tela. Transbordo: rolagem vertical com esmaecimento de 28px em cima/embaixo. Clicar no nome expande direto no log daquele projeto, no tamanho anterior.
+
+FORM: Coluna de faixas finas (item 1 da lista de estruturas, rodada 019a0d38), pedida pelo usuário no lugar da Barra de faixas sorteada. Movimento: a mesma FLIP do quadro, só quando o tamanho não muda.
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance

@@ -577,7 +577,7 @@ body{background:#2b2b2f;background-image:radial-gradient(#3a3a40 1px,transparent
 .vD .d-menu .danger{color:var(--red)}
 .vD .toast{background:var(--face2);border:1px solid var(--line);border-radius:3px;padding:8px 14px;font-size:13px;box-shadow:0 10px 28px rgba(0,0,0,.55)}
 .vD.size-c{overflow:visible}
-.vD .m-box{width:236px;height:340px;display:grid;grid-template-rows:32px minmax(0,1fr);background:var(--rack);border:1px solid var(--line)}
+.vD .m-box{width:236px;height:170px;min-width:200px;min-height:110px;max-width:420px;max-height:640px;resize:both;overflow:hidden;display:grid;grid-template-rows:32px minmax(0,1fr);background:var(--rack);border:1px solid var(--line)}
 .vD .m-head{display:flex;align-items:center;gap:1px;padding:0 3px 0 7px;border-bottom:1px solid var(--rule)}
 .vD .m-grip{flex:1;min-width:0;display:flex;align-items:center;gap:6px;height:24px;color:var(--cyan);cursor:grab}
 .vD .m-grip b{font:600 11px "Barlow Semi Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);white-space:nowrap}
@@ -587,6 +587,7 @@ body{background:#2b2b2f;background-image:radial-gradient(#3a3a40 1px,transparent
 .vD .m-alert{display:inline-flex;align-items:center;gap:3px;height:18px;padding:0 5px;margin-right:2px;border:0;border-radius:3px;background:var(--red);color:var(--on-red);font:700 10.5px "JetBrains Mono",monospace;flex:none}
 .vD .m-alert .sh{width:9px;height:9px}
 .vD .m-list{overflow-y:auto;padding:3px 5px 6px;display:flex;flex-direction:column;gap:2px}
+.vD .m-box::-webkit-resizer{background:linear-gradient(135deg,transparent 55%,var(--line) 55% 62%,transparent 62% 72%,var(--line) 72% 79%,transparent 79%)}
 .vD .m-list.ovf-b{-webkit-mask-image:linear-gradient(#000 calc(100% - 28px),transparent);mask-image:linear-gradient(#000 calc(100% - 28px),transparent)}
 .vD .m-list.ovf-t{-webkit-mask-image:linear-gradient(transparent,#000 28px);mask-image:linear-gradient(transparent,#000 28px)}
 .vD .m-list.ovf-t.ovf-b{-webkit-mask-image:linear-gradient(transparent,#000 28px,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(transparent,#000 28px,#000 calc(100% - 28px),transparent)}
@@ -1092,7 +1093,7 @@ function dMini(){
     const xs = ps.filter(f);
     return xs.length ? `<div class="m-bayh b-${k}"><h3>${label}</h3><span class="n">${xs.length}</span><span class="rule"></span></div>${xs.map(mStrip).join('')}` : '';
   }).join('');
-  return `<div class="m-box" role="region" aria-label="Bat-Computer compacto">
+  return `<div class="m-box" role="region" aria-label="Bat-Computer compacto"${S.miniSize ? ` style="width:${S.miniSize.w}px;height:${S.miniSize.h}px"` : ''}>
     <header class="m-head" data-tauri-drag-region>
       <span class="m-grip" title="Arraste para mover" data-tauri-drag-region>${MARK.replace('width="18" height="18"', 'width="15" height="15"')}<b>Bat-Computer</b></span>
       ${n.err ? `<button class="m-alert" data-act="open-err" title="Ver a falha" aria-label="${n.err} em falha">${SHAPE.err}${n.err}</button>` : ''}
@@ -1155,6 +1156,8 @@ function render(){
     const st = app.querySelector('.m-list'), ck = app.querySelector('.m-strip.cocked');
     if (st && ck) { const y = ck.offsetTop - st.offsetTop, fade = 32; if (y < st.scrollTop + fade || y + ck.offsetHeight > st.scrollTop + st.clientHeight - fade) st.scrollTop = y - st.clientHeight / 2; }
     miniOverflow();
+    const box = app.querySelector('.m-box');
+    if (box) { render.ro?.disconnect(); render.ro = new ResizeObserver(() => { S.miniSize = { w: box.offsetWidth, h: box.offsetHeight }; miniOverflow(); }); render.ro.observe(box); }
   }
   tick(true);
   renderBar();
